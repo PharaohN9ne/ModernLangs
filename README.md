@@ -1,2 +1,2 @@
 # ModernLangs
-Working through programming languages
+Working through Tech Stack
