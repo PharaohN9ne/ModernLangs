@@ -24,23 +24,23 @@ else:
     print("Shipping fee applies")
 
 #Exercise4
-temperature_c = 10
+temperature_c = -0
 
 if temperature_c < 0:
     print("Frozen")
-elif 0 < temperature_c < 20:
+elif 0 <= temperature_c < 20:
     print("Cold")
 else:
     print("Warm")
 
 #Exercise5
-role = "admin"
+role = "Admin"
 
-if role == "admin":
+if role.casefold() == "admin":
     print("Full access")
-elif role == "editor":
+elif role.casefold() == "editor":
     print("Can edit content")
-elif role == "viewer":
+elif role.casefold() == "viewer":
     print("Read-only access")
 else:
     print("Unknown role")
