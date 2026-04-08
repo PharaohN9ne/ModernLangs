@@ -1,0 +1,226 @@
+## Week 1 Day 1
+
+**Concept of the day:** Variables
+**Language of the day:** Python
+**Python version for this course:** 3.14.4. ([Python.org][2])
+
+## What a variable is
+
+A variable is a name that points to a value so your program can reuse it later.
+
+Think of it like labeling a container:
+
+```python
+username = "alex"
+cart_total = 19.99
+is_logged_in = True
+```
+
+In Python, you do **not** declare the type first. You just assign a value. Python figures out the type from the value you give it. The official tutorial is a good reference as you learn the basics. ([Python documentation][3])
+
+## Why variables matter
+
+Variables are the foundation for almost everything else this week:
+
+* conditionals check variable values
+* loops update variables repeatedly
+* functions receive variables as inputs
+* scope controls where variables can be used
+
+## Real-world examples
+
+### 1. Web app example: product total
+
+```python
+product_name = "Wireless Mouse"
+price = 24.99
+quantity = 2
+total = price * quantity
+
+print(product_name)
+print(total)
+```
+
+What’s happening:
+
+* `product_name` stores text
+* `price` stores a decimal number
+* `quantity` stores a whole number
+* `total` reuses earlier variables in a calculation
+
+### 2. Automation example: task reminder
+
+```python
+task_name = "Send weekly report"
+days_until_due = 3
+is_urgent = days_until_due <= 1
+
+print(task_name)
+print(days_until_due)
+print(is_urgent)
+```
+
+This is the kind of pattern you’ll use later in scripts that send reminders or process files.
+
+### 3. Scientific computing example: temperature conversion
+
+```python
+celsius = 22.5
+fahrenheit = (celsius * 9 / 5) + 32
+
+print(celsius)
+print(fahrenheit)
+```
+
+This is a simple version of the kind of data transformation used constantly in scientific code.
+
+## Python-specific notes
+
+Python encourages readable names:
+
+```python
+monthly_revenue = 12000
+tax_rate = 0.0825
+```
+
+This is much better than:
+
+```python
+x = 12000
+y = 0.0825
+```
+
+That readability-first style matches the Python tutorial and makes debugging much easier when you’re new. ([Python documentation][3])
+
+## Compare ahead to the rest of the track
+
+Later, the same idea will look different in other languages:
+
+* **TypeScript** often uses `let` or `const`
+* **PostgreSQL** uses columns, aliases, and expressions instead of normal program variables in many beginner examples
+* **Rust** defaults to immutable bindings with `let`
+* **Go** uses `var` or `:=`
+* **R** commonly uses `<-`
+* **Zig/Julia** each have their own style for naming and assignment
+
+So the core idea stays the same: **store a value, name it, reuse it**.
+
+## Five exercises
+
+### Exercise 1: basic variables
+
+Create variables for:
+
+* your name
+* your age
+* a city
+* whether you like coffee
+
+Print all four.
+
+### Exercise 2: online store total
+
+Create variables for:
+
+* product name
+* item price
+* quantity
+
+Compute and print the total cost.
+
+### Exercise 3: automation-style timer
+
+Create a variable called `total_minutes` and convert it into:
+
+* hours
+* remaining minutes
+
+Example: `135` minutes becomes `2` hours and `15` minutes.
+
+### Exercise 4: scientific data average
+
+Store three measurement values in variables and compute their average.
+
+Example idea:
+
+* `sample_1`
+* `sample_2`
+* `sample_3`
+
+Then print the average.
+
+### Exercise 5: mini profile generator
+
+Create variables for:
+
+* your name
+* one programming interest
+* how many hours per week you want to study
+* whether you want to build web apps
+
+Then print a short summary sentence using those variables.
+
+Example shape:
+
+```python
+name = "Alex"
+interest = "scientific computing"
+hours_per_week = 6
+wants_web_apps = True
+```
+
+## Go further
+
+Try these after the five exercises:
+
+### A. Change variable values
+
+Run this:
+
+```python
+score = 10
+print(score)
+
+score = 15
+print(score)
+```
+
+This shows that variables can change over time.
+
+### B. Mix strings and numbers carefully
+
+This will fail:
+
+```python
+age = 25
+print("Age: " + age)
+```
+
+This works:
+
+```python
+age = 25
+print("Age:", age)
+```
+
+Or:
+
+```python
+age = 25
+print(f"Age: {age}")
+```
+
+### C. Check the type
+
+```python
+temperature = 22.5
+print(type(temperature))
+```
+
+This helps you see what kind of value Python stored.
+
+## Docs to keep open
+
+* Python tutorial: ([Python documentation][3])
+* Informal Python introduction: ([Python documentation][4])
+* IntelliJ Python support: ([JetBrains][5])

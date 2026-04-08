@@ -1,0 +1,238 @@
+Great — next is **conditionals** in Python.
+
+## Week 1, next concept: Conditionals
+
+Conditionals let your program make decisions. In Python, the main tools are `if`, `elif`, and `else`. The official tutorial notes that you can have zero or more `elif` parts, and the `else` part is optional. ([Python documentation][1])
+
+## Basic shape
+
+```python
+temperature = 72
+
+if temperature > 80:
+    print("It is hot.")
+elif temperature > 65:
+    print("It is mild.")
+else:
+    print("It is cool.")
+```
+
+Important Python rule:
+**indentation matters**. The indented block is the code that runs when the condition is true. ([Python documentation][2])
+
+## Real-world examples
+
+### 1. Web app example: login access
+
+```python
+is_logged_in = True
+is_admin = False
+
+if is_logged_in and is_admin:
+    print("Show admin dashboard")
+elif is_logged_in:
+    print("Show user homepage")
+else:
+    print("Show login page")
+```
+
+### 2. Automation example: send reminder
+
+```python
+days_until_due = 1
+
+if days_until_due < 0:
+    print("Task is overdue")
+elif days_until_due == 0:
+    print("Task is due today")
+elif days_until_due <= 3:
+    print("Send reminder")
+else:
+    print("No reminder needed yet")
+```
+
+### 3. Scientific computing example: classify a measurement
+
+```python
+ph_value = 8.2
+
+if ph_value < 7:
+    print("Acidic")
+elif ph_value == 7:
+    print("Neutral")
+else:
+    print("Basic")
+```
+
+## Comparison operators
+
+Python supports comparison operators like:
+
+* `==`
+* `!=`
+* `<`
+* `<=`
+* `>`
+* `>=`
+
+It also supports chained comparisons such as `x < y <= z`. ([Python documentation][3])
+
+Example:
+
+```python
+score = 87
+
+if score >= 90:
+    print("A")
+elif score >= 80:
+    print("B")
+elif score >= 70:
+    print("C")
+else:
+    print("Needs improvement")
+```
+
+## Boolean logic
+
+You will often combine conditions with:
+
+* `and`
+* `or`
+* `not`
+
+```python
+has_ticket = True
+has_id = True
+
+if has_ticket and has_id:
+    print("Allow entry")
+else:
+    print("Do not allow entry")
+```
+
+## Compare to other languages in your track
+
+Same idea, different syntax:
+
+* **TypeScript** uses `if`, `else if`, `else`
+* **PostgreSQL** often uses `CASE WHEN`
+* **Rust** uses `if` and also `match`
+* **Go** uses `if` and `else if`
+* **R** uses `if`, `else if`, `else`
+* **Zig/Julia** also use conditional branching, but with their own style
+
+So again, the big idea stays the same:
+**check a condition, choose a path**.
+
+## Five exercises
+
+### Exercise 1: age check
+
+Create an `age` variable.
+
+* If age is 18 or more, print `"Adult"`
+* Otherwise, print `"Minor"`
+
+### Exercise 2: password length check
+
+Create a variable called `password_length`.
+
+* If it is less than 8, print `"Password too short"`
+* Otherwise, print `"Password length okay"`
+
+### Exercise 3: shipping decision
+
+Create variables:
+
+* `order_total`
+* `is_member`
+
+Rules:
+
+* If `order_total >= 50` or `is_member` is `True`, print `"Free shipping"`
+* Otherwise, print `"Shipping fee applies"`
+
+### Exercise 4: lab result classification
+
+Create a variable `temperature_c`.
+
+* If it is below 0, print `"Frozen"`
+* If it is from 0 up to but not including 20, print `"Cold"`
+* Otherwise, print `"Warm"`
+
+### Exercise 5: website role routing
+
+Create a variable `role` with one of these values:
+
+* `"admin"`
+* `"editor"`
+* `"viewer"`
+
+Print:
+
+* `"Full access"` for admin
+* `"Can edit content"` for editor
+* `"Read-only access"` for viewer
+* `"Unknown role"` for anything else
+
+## Go further
+
+### A. Order matters
+
+This version is wrong:
+
+```python
+score = 95
+
+if score >= 70:
+    print("Pass")
+elif score >= 90:
+    print("Excellent")
+```
+
+Why? Because `95` matches the first condition, so Python never reaches the second one.
+
+Better:
+
+```python
+score = 95
+
+if score >= 90:
+    print("Excellent")
+elif score >= 70:
+    print("Pass")
+else:
+    print("Needs work")
+```
+
+### B. Exact equality vs ranges
+
+```python
+hour = 12
+
+if hour == 12:
+    print("Noon")
+else:
+    print("Not noon")
+```
+
+### C. Boolean variables can be used directly
+
+```python
+is_raining = True
+
+if is_raining:
+    print("Bring an umbrella")
+else:
+    print("No umbrella needed")
+```
+
+## Docs
+
+The Python tutorial’s control flow section is the right reference for `if`, `elif`, and `else`. ([Python documentation][1])
+
+Submit your Exercise 1–5 solutions for grading.
+
+[1]: https://docs.python.org/3/tutorial/controlflow.html?utm_source=chatgpt.com "4. More Control Flow Tools — Python 3.14.4 documentation"
+[2]: https://docs.python.org/3/reference/compound_stmts.html?utm_source=chatgpt.com "8. Compound statements"
+[3]: https://docs.python.org/3/library/stdtypes.html?utm_source=chatgpt.com "Built-in Types"
