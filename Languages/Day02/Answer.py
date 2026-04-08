@@ -9,7 +9,7 @@ else:
 #Exercise2
 password_length = 4
 
-if password_length < 10:
+if password_length < 8:
     print("Password too short")
 else:
     print("Password length okay")
@@ -35,12 +35,13 @@ else:
 
 #Exercise5
 role = "Admin"
+role_revised = role.casefold()
 
-if role.casefold() == "admin":
+if role_revised == "admin":
     print("Full access")
-elif role.casefold() == "editor":
+elif role_revised == "editor":
     print("Can edit content")
-elif role.casefold() == "viewer":
+elif role_revised == "viewer":
     print("Read-only access")
 else:
     print("Unknown role")
