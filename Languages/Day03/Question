@@ -1,0 +1,255 @@
+Let’s go.
+
+## Week 1, next concept: Loops
+
+Loops repeat work so you do not have to write the same code again and again. In Python, the main loop forms are `for` and `while`. They are part of Python’s core control-flow tools. ([Python documentation][1])
+
+## 1. `for` loops
+
+A `for` loop goes through each item in a sequence or iterable.
+
+```python
+fruits = ["apple", "banana", "orange"]
+
+for fruit in fruits:
+    print(fruit)
+```
+
+This prints each fruit one at a time.
+
+### Real-world example: web app product list
+
+```python
+products = ["keyboard", "mouse", "monitor"]
+
+for product in products:
+    print(f"Show product card for: {product}")
+```
+
+### Real-world example: automation reminder list
+
+```python
+tasks = ["email client", "backup files", "update report"]
+
+for task in tasks:
+    print(f"Reminder: {task}")
+```
+
+### Real-world example: scientific measurements
+
+```python
+measurements = [21.5, 22.1, 21.8]
+
+for measurement in measurements:
+    print(f"Measurement recorded: {measurement}")
+```
+
+## 2. `range()`
+
+You will often see `for` used with `range()`, which produces a sequence of numbers.
+
+```python
+for number in range(5):
+    print(number)
+```
+
+This prints:
+
+```python
+0
+1
+2
+3
+4
+```
+
+A very common beginner gotcha:
+`range(5)` stops **before** 5.
+
+You can also control the start and step:
+
+```python
+for number in range(2, 11, 2):
+    print(number)
+```
+
+That prints even numbers from 2 through 10. Python’s tutorial and built-in functions docs cover `for` and `range()` directly. ([Python documentation][1])
+
+## 3. `while` loops
+
+A `while` loop keeps running as long as a condition stays true.
+
+```python
+count = 1
+
+while count <= 3:
+    print(count)
+    count += 1
+```
+
+This prints:
+
+```python
+1
+2
+3
+```
+
+Important:
+If the condition never becomes false, the loop can run forever.
+
+## Comparing `for` and `while`
+
+Use `for` when:
+
+* you know what items you want to loop over
+* you want to repeat a fixed number of times
+
+Use `while` when:
+
+* you want to keep going until a condition changes
+
+## Real-world examples
+
+### Web app example: show menu items
+
+```python
+menu_items = ["Home", "Products", "Cart", "Profile"]
+
+for item in menu_items:
+    print(f"Render nav link: {item}")
+```
+
+### Automation example: retry until success
+
+```python
+attempt = 1
+
+while attempt <= 3:
+    print(f"Trying connection attempt {attempt}")
+    attempt += 1
+```
+
+### Scientific example: total a set of readings
+
+```python
+readings = [10, 12, 9, 11]
+total = 0
+
+for reading in readings:
+    total += reading
+
+print(f"Total = {total}")
+```
+
+## Python-specific notes
+
+Indentation matters inside loops, just like with conditionals. Compound statements in Python use headers ending with a colon and an indented block underneath. ([Python documentation][2])
+
+```python
+for number in range(3):
+    print(number)
+```
+
+## Compare to the rest of your track
+
+Later, the same idea will look different in other languages:
+
+* TypeScript has `for`, `while`, and array methods like `forEach`
+* PostgreSQL often uses set-based queries instead of regular loops
+* Rust has `for`, `while`, and `loop`
+* Go mainly uses `for`
+* R often uses `for`, `while`, and vectorized operations
+* Zig and Julia both support looping, but with their own syntax
+
+So the shared idea is:
+**repeat work over data or until a condition changes**.
+
+## Five exercises
+
+### Exercise 1: count from 1 to 5
+
+Use a `for` loop with `range()` to print the numbers 1 through 5.
+
+### Exercise 2: print task reminders
+
+Create a list of three tasks and use a `for` loop to print each one.
+
+### Exercise 3: sum numbers
+
+Create a list of numbers and use a loop to calculate the total.
+
+Example idea:
+
+```python
+numbers = [4, 7, 2, 9]
+```
+
+### Exercise 4: countdown with `while`
+
+Use a `while` loop to print:
+
+* 3
+* 2
+* 1
+* `"Lift off!"`
+
+### Exercise 5: classify temperatures
+
+Create a list of temperatures and loop through them.
+For each temperature:
+
+* print `"Cold"` if it is below 20
+* otherwise print `"Warm"`
+
+## Go further
+
+### A. Loop with index
+
+```python
+products = ["keyboard", "mouse", "monitor"]
+
+for index, product in enumerate(products):
+    print(index, product)
+```
+
+### B. Build a running total
+
+```python
+sales = [100, 200, 150]
+running_total = 0
+
+for sale in sales:
+    running_total += sale
+    print(f"Running total: {running_total}")
+```
+
+### C. Stop early with `break`
+
+```python
+for number in range(10):
+    if number == 5:
+        break
+    print(number)
+```
+
+### D. Skip one item with `continue`
+
+```python
+for number in range(5):
+    if number == 2:
+        continue
+    print(number)
+```
+
+## Docs
+
+* Python tutorial: control flow tools ([Python documentation][1])
+* Python language reference: compound statements ([Python documentation][2])
+* Built-in functions like `range()` ([Python documentation][3])
+
+Submit your Exercise 1–5 solutions for grading.
+
+[1]: https://docs.python.org/3/tutorial/index.html?utm_source=chatgpt.com "The Python Tutorial — Python 3.14.4 documentation"
+[2]: https://docs.python.org/3/reference/compound_stmts.html?utm_source=chatgpt.com "8. Compound statements"
+[3]: https://docs.python.org/3/library/functions.html?utm_source=chatgpt.com "Built-in Functions"
