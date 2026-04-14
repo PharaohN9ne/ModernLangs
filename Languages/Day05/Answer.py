@@ -23,9 +23,10 @@ print(status)
 
 #Question4
 def add_tax(price, tax_rate):
-    return price + tax_rate
+    #return price + tax_rate
+    return price + (price * tax_rate)
 
-final_price = add_tax(100, 6)
+final_price = add_tax(100, .06)
 print(final_price)
 
 #Question5
