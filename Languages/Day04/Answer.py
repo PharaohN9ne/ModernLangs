@@ -14,7 +14,9 @@ greet_person("Bob")
 def multiply_numbers(num1, num2):
     return num1 * num2
 
-print(multiply_numbers(3, 4))
+#print(multiply_numbers(3, 4))
+full_number = multiply_numbers(3, 6)
+print(full_number)
 
 #Question4
 def shipping_message(order_total):
@@ -30,11 +32,12 @@ print(shipping_message(86))
 def temperature_label(temperature_c):
     if temperature_c < 0:
         return "Frozen"
-    elif 0 >= temperature_c < 20:
-        return "cold"
+    #elif 0 >= temperature_c < 20:
+    elif 0 <= temperature_c < 20:
+        return "Cold"
     else:
         return "Warm"
 
 print(temperature_label(-6))
-print(temperature_label(86))
+print(temperature_label(19))
 print(temperature_label(0))
