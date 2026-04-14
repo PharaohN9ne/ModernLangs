@@ -30,12 +30,12 @@ print(average)
 
 #Exercise 5
 name = "Anthony"
-programming = "Developer"
-hoursToStudy = 7
-buildApps = True
+programming_interest = "Developer"
+hours_to_study = 7
+wants_web_apps = True
 
-print(f'My name is {name} and I want to be a {programming}. I plan to study for {hoursToStudy} hours throughout the'
-      f'and it is {buildApps} that I want to build web applications.')
+print(f'My name is {name} and I want to be a {programming_interest}. I plan to study for {hours_to_study} hours throughout the'
+      f'and it is {wants_web_apps} that I want to build web applications.')
 
 #Exercise 5 redo
 print(f'My name is {name}. I want to become a {programming_interest}. I plan to study for {hours_to_study} hours '
