@@ -1,0 +1,333 @@
+## Week 1, next concept: Scope
+
+Scope is **where a variable can be accessed**.
+
+The big idea:
+
+* a variable created **inside** a function usually belongs only to that function
+* a variable created **outside** a function is usually available more broadly
+* Python determines scopes textually, and function calls create a new local symbol table for each call. ([Python documentation][1])
+
+## Why scope matters
+
+Scope prevents variables from colliding with each other and helps keep code organized.
+
+## 1. Local scope
+
+A variable created inside a function is **local** to that function.
+
+```python
+def show_order():
+    order_total = 42.50
+    print(order_total)
+
+show_order()
+```
+
+This works because `order_total` is used inside the function where it was created.
+
+But this would fail:
+
+```python
+def show_order():
+    order_total = 42.50
+
+show_order()
+print(order_total)
+```
+
+Why? Because `order_total` only exists inside `show_order()`.
+
+Python’s tutorial explains that each function call creates a new local symbol table. ([Python documentation][2])
+
+## 2. Global scope
+
+A variable defined at the top level of a file is in the module’s global scope.
+
+```python
+site_name = "Science Tracker"
+
+def show_site():
+    print(site_name)
+
+show_site()
+```
+
+This works because the function is reading a global variable.
+
+Python’s docs note that the global scope of a function defined in a module is that module’s namespace. ([Python documentation][1])
+
+## 3. Local vs global with the same name
+
+A local variable can have the same name as a global variable, and the local one wins inside the function.
+
+```python
+name = "Global Anthony"
+
+def show_name():
+    name = "Local Anthony"
+    print(name)
+
+show_name()
+print(name)
+```
+
+Output:
+
+```python
+Local Anthony
+Global Anthony
+```
+
+That is because the local `name` exists only inside the function.
+
+## 4. Assigning inside a function makes a name local
+
+This is a very important Python rule:
+
+If a variable is assigned anywhere in a function body, Python treats it as local unless you explicitly declare it `global`. The Python FAQ states this directly. ([Python documentation][3])
+
+Example:
+
+```python
+count = 10
+
+def update_count():
+    count = 5
+    print(count)
+
+update_count()
+print(count)
+```
+
+Output:
+
+```python
+5
+10
+```
+
+The function changed a local `count`, not the global one.
+
+## 5. Using `global`
+
+If you really want to assign to a global variable from inside a function, you can use `global`.
+
+```python
+count = 10
+
+def update_count():
+    global count
+    count = 5
+
+update_count()
+print(count)
+```
+
+Now the global `count` becomes `5`.
+
+Python’s language reference says the `global` statement applies to the entire current scope. ([Python documentation][4])
+
+Important beginner advice:
+Try not to overuse `global`. It is usually cleaner to return values from functions instead.
+
+## 6. Nested functions and `nonlocal`
+
+If one function is inside another, the inner function can read values from the outer function. If you want the inner function to **reassign** a variable from the enclosing function, use `nonlocal`. Python’s glossary and language reference describe this behavior. ([Python documentation][5])
+
+```python
+def outer():
+    message = "start"
+
+    def inner():
+        nonlocal message
+        message = "updated"
+
+    inner()
+    print(message)
+
+outer()
+```
+
+This prints:
+
+```python
+updated
+```
+
+## Real-world examples
+
+### 1. Web app example: page title
+
+```python
+page_title = "Dashboard"
+
+def show_page():
+    print(page_title)
+
+show_page()
+```
+
+`page_title` is global here, and the function reads it.
+
+### 2. Automation example: local retry counter
+
+```python
+def send_reminders():
+    retry_count = 3
+    print(retry_count)
+
+send_reminders()
+```
+
+`retry_count` belongs only to that function.
+
+### 3. Scientific computing example: reusable conversion
+
+```python
+conversion_factor = 9 / 5
+
+def celsius_to_fahrenheit(celsius):
+    return (celsius * conversion_factor) + 32
+
+print(celsius_to_fahrenheit(20))
+```
+
+The function reads a value from outer scope.
+
+## Better practice: return values instead of changing globals
+
+Instead of this:
+
+```python
+total = 0
+
+def add_amount(amount):
+    global total
+    total += amount
+```
+
+Prefer this:
+
+```python
+def add_amount(total, amount):
+    return total + amount
+
+total = 0
+total = add_amount(total, 5)
+print(total)
+```
+
+That style is easier to test and reason about.
+
+## Compare to the rest of your track
+
+Every language has scope, but the details differ:
+
+* **TypeScript** has block scope with `let` and `const`
+* **PostgreSQL** handles scope differently inside queries, CTEs, and functions
+* **Rust** has strict lexical scope and ownership rules
+* **Go** has block scope and short variable declarations
+* **R** has function environments and lexical scoping
+* **Zig/Julia** each have their own rules for local and global bindings
+
+The shared idea is:
+**where a name exists, and which value that name refers to**.
+
+## Five exercises
+
+### Exercise 1: local variable
+
+Write a function called `show_city` that creates a local variable `city` with your city name and prints it.
+
+Then call the function.
+
+### Exercise 2: global read
+
+Create a global variable called `course_name` and set it to a string.
+
+Write a function called `print_course` that prints `course_name`.
+
+Then call the function.
+
+### Exercise 3: local vs global
+
+Create a global variable called `status` with the value `"outside"`.
+
+Write a function called `show_status` that creates a local variable also called `status` with the value `"inside"` and prints it.
+
+After calling the function, print the global `status`.
+
+### Exercise 4: return instead of global
+
+Write a function called `add_tax` that takes `price` and `tax_rate`, then returns the final price.
+
+Call it, store the result in a variable, and print it.
+
+### Exercise 5: nested scope
+
+Write a function called `outer_message` that:
+
+* creates a variable `message = "hello"`
+* defines an inner function that prints `message`
+* calls the inner function
+
+Then call `outer_message()`.
+
+## Go further
+
+### A. See scope behavior clearly
+
+```python
+name = "outside"
+
+def demo():
+    name = "inside"
+    print(name)
+
+demo()
+print(name)
+```
+
+### B. Use `nonlocal`
+
+```python
+def counter():
+    count = 0
+
+    def increase():
+        nonlocal count
+        count += 1
+        print(count)
+
+    increase()
+    increase()
+
+counter()
+```
+
+### C. Watch out for accidental locals
+
+```python
+score = 10
+
+def update():
+    score = score + 1
+```
+
+That causes an error, because Python treats `score` as local when it sees the assignment. The FAQ explains this local/global rule. ([Python documentation][3])
+
+## Docs
+
+* Python tutorial: more control flow tools and function basics. ([Python documentation][2])
+* Python tutorial: classes section with the scope discussion. ([Python documentation][1])
+* Python FAQ: local and global variable rules. ([Python documentation][3])
+* Python language reference: `global` and `nonlocal`. ([Python documentation][4])
+
+Submit your Exercise 1–5 solutions for grading.
+
+[1]: https://docs.python.org/3/tutorial/classes.html?utm_source=chatgpt.com "9. Classes — Python 3.14.4 documentation"
+[2]: https://docs.python.org/3/tutorial/controlflow.html?utm_source=chatgpt.com "4. More Control Flow Tools — Python 3.14.4 documentation"
+[3]: https://docs.python.org/3/faq/programming.html?utm_source=chatgpt.com "Programming FAQ — Python 3.14.4 documentation"
+[4]: https://docs.python.org/3/reference/simple_stmts.html?utm_source=chatgpt.com "7. Simple statements"
+[5]: https://docs.python.org/3/glossary.html?utm_source=chatgpt.com "Glossary — Python 3.14.4 documentation"
