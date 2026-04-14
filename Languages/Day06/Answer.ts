@@ -23,11 +23,11 @@ for (const task of tasks) {
 }
 
 //question4
-function addTask(price: number, taxRate: number): number {
+function addTax(price: number, taxRate: number): number {
     return price + (price * taxRate);
 }
 
-let result = addTask(100, .06)
+let result = addTax(100, .06)
 console.log(result)
 
 //question5
