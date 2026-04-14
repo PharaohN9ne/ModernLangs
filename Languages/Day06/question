@@ -1,0 +1,402 @@
+Awesome — **Week 1 Day 2** starts now.
+
+## Week 1 Day 2
+
+**Language of the day:** TypeScript
+**Version for this course:** **TypeScript 6.0**. The official docs describe 6.0 as a transition release that remains compatible with existing TypeScript knowledge while preparing for TypeScript 7.0. ([TypeScript][1])
+
+## How TypeScript compares to Python
+
+You just learned Python versions of:
+
+* variables
+* conditionals
+* loops
+* functions
+* scope
+
+Now we’ll revisit the same ideas in **TypeScript**.
+
+Big comparison:
+
+* Python is dynamically typed
+* TypeScript adds a static type system on top of JavaScript, giving better editor checks and tooling ([TypeScript][2])
+
+That means TypeScript often looks like JavaScript, but with type annotations when helpful.
+
+## Setup
+
+For TypeScript, the official setup page says the usual route is installing through npm if you are using Node.js. The TypeScript site also provides the Playground if you want to test code quickly in the browser. ([TypeScript][3])
+
+## 1. Variables in TypeScript
+
+TypeScript uses `let` and `const` for variable declarations. The handbook notes that `const` prevents reassignment, while `let` avoids several old `var` pitfalls. ([TypeScript][4])
+
+### Basic examples
+
+```ts
+const name: string = "Anthony";
+let age: number = 32;
+const likesCoffee: boolean = false;
+
+console.log(name, age, likesCoffee);
+```
+
+### Python comparison
+
+Python:
+
+```python
+name = "Anthony"
+age = 32
+likes_coffee = False
+```
+
+TypeScript:
+
+```ts
+const name: string = "Anthony";
+let age: number = 32;
+const likesCoffee: boolean = false;
+```
+
+Main differences:
+
+* semicolons are common
+* types can be written explicitly
+* `camelCase` is more common in TypeScript, while Python prefers `snake_case`
+
+### Real-world example: web app cart item
+
+```ts
+const productName: string = "basketball";
+const itemPrice: number = 3.23;
+const quantity: number = 25;
+
+const totalCost = itemPrice * quantity;
+console.log(`Total cost = ${totalCost}`);
+```
+
+### Real-world example: automation reminder
+
+```ts
+const taskName: string = "Send weekly report";
+const daysLeft: number = 2;
+const isUrgent: boolean = daysLeft <= 1;
+
+console.log(taskName, daysLeft, isUrgent);
+```
+
+### Real-world example: scientific computing
+
+```ts
+const celsius: number = 22.5;
+const fahrenheit = (celsius * 9) / 5 + 32;
+
+console.log(fahrenheit);
+```
+
+## 2. Conditionals in TypeScript
+
+TypeScript uses normal JavaScript `if`, `else if`, and `else`. TypeScript also performs control-flow analysis and narrowing as your code moves through these branches. ([TypeScript][5])
+
+```ts
+const age: number = 17;
+
+if (age >= 18) {
+  console.log("Adult");
+} else {
+  console.log("Minor");
+}
+```
+
+### Web app example: role-based access
+
+```ts
+const role: string = "editor";
+
+if (role === "admin") {
+  console.log("Full access");
+} else if (role === "editor") {
+  console.log("Can edit content");
+} else if (role === "viewer") {
+  console.log("Read-only access");
+} else {
+  console.log("Unknown role");
+}
+```
+
+### Python comparison
+
+Python uses:
+
+```python
+if role == "admin":
+    ...
+elif role == "editor":
+    ...
+else:
+    ...
+```
+
+TypeScript uses braces and `===`:
+
+```ts
+if (role === "admin") {
+  ...
+} else if (role === "editor") {
+  ...
+} else {
+  ...
+}
+```
+
+Important difference:
+
+* Python uses indentation
+* TypeScript uses `{}` braces
+
+## 3. Loops in TypeScript
+
+You already used Python `for` and `while`. TypeScript has both too.
+
+### `for` with a counter
+
+```ts
+for (let count = 1; count <= 5; count++) {
+  console.log(count);
+}
+```
+
+### `for...of` for arrays
+
+```ts
+const tasks: string[] = ["go to the store", "make dinner", "pick up baby"];
+
+for (const task of tasks) {
+  console.log(task);
+}
+```
+
+### `while`
+
+```ts
+let countdown = 3;
+
+while (countdown > 0) {
+  console.log(countdown);
+  countdown--;
+}
+
+console.log("Lift off!");
+```
+
+The handbook’s iterators and generators page explains iteration in terms of iterable values and `Symbol.iterator`, which is why arrays work naturally with `for...of`. ([TypeScript][6])
+
+### Python comparison
+
+Python array loop:
+
+```python
+for task in tasks:
+    print(task)
+```
+
+TypeScript array loop:
+
+```ts
+for (const task of tasks) {
+  console.log(task);
+}
+```
+
+## 4. Functions in TypeScript
+
+The docs organize this under “More on Functions,” and TypeScript lets you annotate parameter and return types. ([TypeScript][7])
+
+### Basic function
+
+```ts
+function sayHello(): void {
+  console.log("Hello!");
+}
+
+sayHello();
+```
+
+`void` means the function does not return a value you plan to use.
+
+### Function with parameters
+
+```ts
+function greetPerson(name: string): void {
+  console.log(`Hello, ${name}!`);
+}
+
+greetPerson("Anthony");
+```
+
+### Function with a return value
+
+```ts
+function multiplyNumbers(num1: number, num2: number): number {
+  return num1 * num2;
+}
+
+const result = multiplyNumbers(3, 6);
+console.log(result);
+```
+
+### Real-world example: shipping message
+
+```ts
+function shippingMessage(orderTotal: number): string {
+  if (orderTotal >= 50) {
+    return "Free shipping";
+  } else {
+    return "Shipping fee applies";
+  }
+}
+
+console.log(shippingMessage(20));
+console.log(shippingMessage(75));
+```
+
+## 5. Scope in TypeScript
+
+TypeScript follows JavaScript scoping rules. `let` and `const` are block-scoped, which is one reason the handbook recommends them over `var`. ([TypeScript][4])
+
+### Example
+
+```ts
+const courseName = "TypeScript Basics";
+
+function printCourse(): void {
+  console.log(courseName);
+}
+
+printCourse();
+```
+
+### Local vs outer scope
+
+```ts
+const status = "outside";
+
+function showStatus(): void {
+  const status = "inside";
+  console.log(status);
+}
+
+showStatus();
+console.log(status);
+```
+
+Output:
+
+```ts
+inside
+outside
+```
+
+### Python comparison
+
+This is very similar to what you just did in Python, but TypeScript usually uses braces and block scoping more heavily.
+
+## Five exercises
+
+### Exercise 1: variables
+
+Create variables for:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Print them with `console.log()`.
+
+### Exercise 2: conditional
+
+Create a variable `passwordLength`.
+
+Rules:
+
+* if it is less than 8, print `"Password too short"`
+* otherwise, print `"Password length okay"`
+
+### Exercise 3: loop
+
+Create an array of three tasks and use a `for...of` loop to print each task.
+
+### Exercise 4: function
+
+Write a function called `addTax` that takes:
+
+* `price`
+* `taxRate`
+
+Return the final price after tax.
+
+Then call it, store the result in a variable, and print it.
+
+### Exercise 5: scope
+
+Create a global variable called `status` with the value `"outside"`.
+
+Write a function called `showStatus` that creates a local variable also called `status` with the value `"inside"` and prints it.
+
+Then:
+
+* call the function
+* print the global `status`
+
+## Go further
+
+### A. Let TypeScript infer the type
+
+```ts
+const city = "Bowie";
+```
+
+TypeScript can often infer the type without you writing `: string`.
+
+### B. Narrowing in conditionals
+
+```ts
+function printValue(value: string | number): void {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  } else {
+    console.log(value.toFixed(2));
+  }
+}
+```
+
+This is one of the big TypeScript advantages: the type system narrows based on runtime checks. ([TypeScript][5])
+
+### C. Prefer `const` unless you need reassignment
+
+```ts
+const siteName = "Lab Tracker";
+let retryCount = 3;
+```
+
+That matches the handbook guidance around `const` and `let`. ([TypeScript][4])
+
+## Docs to keep open
+
+* TypeScript docs home: ([TypeScript][7])
+* TypeScript 6.0 release notes: ([TypeScript][1])
+* Variable declarations: ([TypeScript][4])
+* Narrowing and control-flow analysis: ([TypeScript][5])
+* Download / setup: ([TypeScript][3])
+
+Submit your Exercise 1–5 solutions for grading.
+
+[1]: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-6-0.html?utm_source=chatgpt.com "Documentation - TypeScript 6.0"
+[2]: https://www.typescriptlang.org/?utm_source=chatgpt.com "TypeScript: JavaScript With Syntax For Types."
+[3]: https://www.typescriptlang.org/download/?utm_source=chatgpt.com "How to set up TypeScript"
+[4]: https://www.typescriptlang.org/docs/handbook/variable-declarations.html?utm_source=chatgpt.com "Documentation - Variable Declaration"
+[5]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html?utm_source=chatgpt.com "Documentation - Narrowing"
+[6]: https://www.typescriptlang.org/docs/handbook/iterators-and-generators.html?utm_source=chatgpt.com "Documentation - Iterators and Generators"
+[7]: https://www.typescriptlang.org/docs/?utm_source=chatgpt.com "The starting point for learning TypeScript"

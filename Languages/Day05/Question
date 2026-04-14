@@ -267,7 +267,6 @@ Call it, store the result in a variable, and print it.
 ### Exercise 5: nested scope
 
 Write a function called `outer_message` that:
-
 * creates a variable `message = "hello"`
 * defines an inner function that prints `message`
 * calls the inner function
