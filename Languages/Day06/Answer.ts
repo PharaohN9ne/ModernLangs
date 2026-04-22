@@ -31,7 +31,7 @@ let result = addTax(100, .06)
 console.log(result)
 
 //question5
-const status: string = "outside";
+const runningStatus: string = "outside";
 
 function showStatus(): void {
     const status: string = "inside"
@@ -39,4 +39,4 @@ function showStatus(): void {
 }
 
 showStatus()
-console.log(status)
+console.log(runningStatus)
