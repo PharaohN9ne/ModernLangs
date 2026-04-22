@@ -29,11 +29,12 @@ fn main () {
 }
 
 //Question4
-fn add_tax (price: i32, tax_rate: i64) {
-    let final_price = price + (price * tax_rate);
+fn add_tax(price: f64, tax_rate: f64) -> f64 {
+    price + (price * tax_rate)
 }
-fn main () {
-    let x = add_tax(100, 0.06);
+
+fn main() {
+    let x = add_tax(100.0, 0.06);
     println!("{}", x);
 }
 
