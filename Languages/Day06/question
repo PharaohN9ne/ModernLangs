@@ -1,307 +1,296 @@
-Awesome — **Week 1 Day 2** starts now.
+Week 1 Day 6
 
-## Week 1 Day 2
+**Language of the day:** R
+**Version for this course:** **R 4.6.0**, released on **April 24, 2026**. The current CRAN page lists R 4.6.0 as the latest release, and the R Project page links the current manuals there.
 
-**Language of the day:** TypeScript
-**Version for this course:** **TypeScript 6.0**. The official docs describe 6.0 as a transition release that remains compatible with existing TypeScript knowledge while preparing for TypeScript 7.0. ([TypeScript][1])
+## How R compares to what you’ve already learned
 
-## How TypeScript compares to Python
+R is especially important for:
 
-You just learned Python versions of:
+* scientific computing
+* statistics
+* data analysis
+* visualization
 
-* variables
-* conditionals
-* loops
-* functions
-* scope
+Compared with the earlier languages:
 
-Now we’ll revisit the same ideas in **TypeScript**.
-
-Big comparison:
-
-* Python is dynamically typed
-* TypeScript adds a static type system on top of JavaScript, giving better editor checks and tooling ([TypeScript][2])
-
-That means TypeScript often looks like JavaScript, but with type annotations when helpful.
+* **Python** is general-purpose and widely used in automation and data work
+* **TypeScript** is strong for web apps
+* **PostgreSQL** is for querying structured data
+* **Rust** is strict and performance-focused
+* **Go** is simple and practical
+* **R** is built around data, vectors, analysis, and statistical workflows
 
 ## Setup
 
-For TypeScript, the official setup page says the usual route is installing through npm if you are using Node.js. The TypeScript site also provides the Playground if you want to test code quickly in the browser. ([TypeScript][3])
+The official R Project and CRAN pages are the right places to install R. RStudio is now distributed through Posit, which documents current RStudio Desktop downloads there.
 
-## 1. Variables in TypeScript
+## 1. Variables in R
 
-TypeScript uses `let` and `const` for variable declarations. The handbook notes that `const` prevents reassignment, while `let` avoids several old `var` pitfalls. ([TypeScript][4])
+R commonly uses `<-` for assignment, though `=` also works in many cases. R’s introduction manual shows assignment with `<-` as the standard beginner style.
 
-### Basic examples
+### Basic example
 
-```ts
-const name: string = "Anthony";
-let age: number = 32;
-const likesCoffee: boolean = false;
+```r
+name <- "Anthony"
+age <- 32
+wants_web_apps <- TRUE
 
-console.log(name, age, likesCoffee);
+print(name)
+print(age)
+print(wants_web_apps)
 ```
 
-### Python comparison
+### Combine output
+
+```r
+name <- "Anthony"
+age <- 32
+wants_web_apps <- TRUE
+
+cat(name, age, wants_web_apps, "\n")
+```
+
+### Compare with earlier languages
 
 Python:
 
 ```python
 name = "Anthony"
-age = 32
-likes_coffee = False
 ```
 
 TypeScript:
 
 ```ts
 const name: string = "Anthony";
-let age: number = 32;
-const likesCoffee: boolean = false;
 ```
 
-Main differences:
+Go:
 
-* semicolons are common
-* types can be written explicitly
-* `camelCase` is more common in TypeScript, while Python prefers `snake_case`
-
-### Real-world example: web app cart item
-
-```ts
-const productName: string = "basketball";
-const itemPrice: number = 3.23;
-const quantity: number = 25;
-
-const totalCost = itemPrice * quantity;
-console.log(`Total cost = ${totalCost}`);
+```go
+name := "Anthony"
 ```
 
-### Real-world example: automation reminder
+R:
 
-```ts
-const taskName: string = "Send weekly report";
-const daysLeft: number = 2;
-const isUrgent: boolean = daysLeft <= 1;
-
-console.log(taskName, daysLeft, isUrgent);
+```r
+name <- "Anthony"
 ```
 
-### Real-world example: scientific computing
+### Real-world example: web app cart total
 
-```ts
-const celsius: number = 22.5;
-const fahrenheit = (celsius * 9) / 5 + 32;
+```r
+product_name <- "basketball"
+item_price <- 3.23
+quantity <- 25
+total_cost <- item_price * quantity
 
-console.log(fahrenheit);
+cat(product_name, total_cost, "\n")
 ```
 
-## 2. Conditionals in TypeScript
+### Real-world example: scientific conversion
 
-TypeScript uses normal JavaScript `if`, `else if`, and `else`. TypeScript also performs control-flow analysis and narrowing as your code moves through these branches. ([TypeScript][5])
+```r
+celsius <- 22.5
+fahrenheit <- (celsius * 9 / 5) + 32
 
-```ts
-const age: number = 17;
+print(fahrenheit)
+```
+
+## 2. Conditionals in R
+
+R uses `if`, `else if`, and `else`. The R introduction manual documents control flow including `if` and looping constructs.
+
+```r
+age <- 17
 
 if (age >= 18) {
-  console.log("Adult");
+  print("Adult")
 } else {
-  console.log("Minor");
+  print("Minor")
 }
 ```
 
-### Web app example: role-based access
+### Web app example: role access
 
-```ts
-const role: string = "editor";
+```r
+role <- "editor"
 
-if (role === "admin") {
-  console.log("Full access");
-} else if (role === "editor") {
-  console.log("Can edit content");
-} else if (role === "viewer") {
-  console.log("Read-only access");
+if (role == "admin") {
+  print("Full access")
+} else if (role == "editor") {
+  print("Can edit content")
+} else if (role == "viewer") {
+  print("Read-only access")
 } else {
-  console.log("Unknown role");
+  print("Unknown role")
 }
 ```
 
-### Python comparison
+### Important R detail
 
-Python uses:
+Use `TRUE` and `FALSE` in uppercase. Lowercase often works too, but uppercase is the standard style in base R docs.
 
-```python
-if role == "admin":
-    ...
-elif role == "editor":
-    ...
-else:
-    ...
-```
+## 3. Loops in R
 
-TypeScript uses braces and `===`:
+R supports `for` and `while`. It is also famous for vectorized operations, but for Week 1 we’ll stay with the same core loop ideas you’ve already practiced. R’s introduction manual documents both `for` and `while`.
 
-```ts
-if (role === "admin") {
-  ...
-} else if (role === "editor") {
-  ...
-} else {
-  ...
+### `for` loop
+
+```r
+for (count in 1:5) {
+  print(count)
 }
 ```
 
-Important difference:
+### Loop through a vector
 
-* Python uses indentation
-* TypeScript uses `{}` braces
+```r
+tasks <- c("go to the store", "make dinner", "pick up baby")
 
-## 3. Loops in TypeScript
-
-You already used Python `for` and `while`. TypeScript has both too.
-
-### `for` with a counter
-
-```ts
-for (let count = 1; count <= 5; count++) {
-  console.log(count);
+for (task in tasks) {
+  print(task)
 }
 ```
 
-### `for...of` for arrays
+### `while` loop
 
-```ts
-const tasks: string[] = ["go to the store", "make dinner", "pick up baby"];
-
-for (const task of tasks) {
-  console.log(task);
-}
-```
-
-### `while`
-
-```ts
-let countdown = 3;
+```r
+countdown <- 3
 
 while (countdown > 0) {
-  console.log(countdown);
-  countdown--;
+  print(countdown)
+  countdown <- countdown - 1
 }
 
-console.log("Lift off!");
+print("Lift off!")
 ```
 
-The handbook’s iterators and generators page explains iteration in terms of iterable values and `Symbol.iterator`, which is why arrays work naturally with `for...of`. ([TypeScript][6])
+### Scientific computing angle
 
-### Python comparison
+R often shines when working through entire vectors at once:
 
-Python array loop:
-
-```python
-for task in tasks:
-    print(task)
+```r
+temperatures <- c(10, 25, 18)
+temperatures * 2
 ```
 
-TypeScript array loop:
+That is a preview of something very R-like: operating on many values at once. The “An Introduction to R” manual emphasizes vectors as a core concept.
 
-```ts
-for (const task of tasks) {
-  console.log(task);
-}
-```
+## 4. Functions in R
 
-## 4. Functions in TypeScript
-
-The docs organize this under “More on Functions,” and TypeScript lets you annotate parameter and return types. ([TypeScript][7])
+You define functions with `function(...)`. The official intro manual covers function definitions and object behavior in R.
 
 ### Basic function
 
-```ts
-function sayHello(): void {
-  console.log("Hello!");
+```r
+say_hello <- function() {
+  print("Hello!")
 }
 
-sayHello();
+say_hello()
 ```
 
-`void` means the function does not return a value you plan to use.
+### Function with parameter
 
-### Function with parameters
-
-```ts
-function greetPerson(name: string): void {
-  console.log(`Hello, ${name}!`);
+```r
+greet_person <- function(name) {
+  print(paste("Hello,", name))
 }
 
-greetPerson("Anthony");
+greet_person("Anthony")
 ```
 
-### Function with a return value
+### Function with return value
 
-```ts
-function multiplyNumbers(num1: number, num2: number): number {
-  return num1 * num2;
+```r
+multiply_numbers <- function(num1, num2) {
+  return(num1 * num2)
 }
 
-const result = multiplyNumbers(3, 6);
-console.log(result);
+result <- multiply_numbers(3, 6)
+print(result)
 ```
 
-### Real-world example: shipping message
+### Real-world example: tax calculation
 
-```ts
-function shippingMessage(orderTotal: number): string {
-  if (orderTotal >= 50) {
-    return "Free shipping";
-  } else {
-    return "Shipping fee applies";
-  }
+```r
+add_tax <- function(price, tax_rate) {
+  return(price + (price * tax_rate))
 }
 
-console.log(shippingMessage(20));
-console.log(shippingMessage(75));
+final_price <- add_tax(100, 0.06)
+print(final_price)
 ```
 
-## 5. Scope in TypeScript
+## 5. Scope in R
 
-TypeScript follows JavaScript scoping rules. `let` and `const` are block-scoped, which is one reason the handbook recommends them over `var`. ([TypeScript][4])
+R uses lexical scoping. The R language definition and related documentation describe environments and name lookup, but for Week 1 the practical rule is simple: a variable created inside a function is local to that function unless you deliberately work with outer environments.
 
 ### Example
 
-```ts
-const courseName = "TypeScript Basics";
-
-function printCourse(): void {
-  console.log(courseName);
+```r
+show_city <- function() {
+  city <- "Bowie"
+  print(city)
 }
 
-printCourse();
+show_city()
 ```
 
-### Local vs outer scope
+### Outer vs inner
 
-```ts
-const status = "outside";
+```r
+status <- "outside"
 
-function showStatus(): void {
-  const status = "inside";
-  console.log(status);
+show_status <- function() {
+  status <- "inside"
+  print(status)
 }
 
-showStatus();
-console.log(status);
+show_status()
+print(status)
 ```
 
 Output:
 
-```ts
-inside
-outside
+```r
+[1] "inside"
+[1] "outside"
 ```
 
-### Python comparison
+That should feel familiar from Python, Rust, and Go.
 
-This is very similar to what you just did in Python, but TypeScript usually uses braces and block scoping more heavily.
+## Compare to the other languages
+
+### Python
+
+* `print()`
+* indentation-based blocks
+* `def`
+
+### TypeScript
+
+* braces
+* `console.log()`
+* `function`
+
+### Rust
+
+* braces
+* `fn`
+* explicit return types often required
+
+### Go
+
+* braces
+* `func`
+
+### R
+
+* `<-`
+* `print()` or `cat()`
+* `function(...)`
 
 ## Five exercises
 
@@ -313,11 +302,11 @@ Create variables for:
 * your age
 * whether you want to build web apps
 
-Print them with `console.log()`.
+Print them.
 
 ### Exercise 2: conditional
 
-Create a variable `passwordLength`.
+Create a variable `password_length`.
 
 Rules:
 
@@ -326,14 +315,14 @@ Rules:
 
 ### Exercise 3: loop
 
-Create an array of three tasks and use a `for...of` loop to print each task.
+Create a vector of three tasks and use a `for` loop to print each task.
 
 ### Exercise 4: function
 
-Write a function called `addTax` that takes:
+Write a function called `add_tax` that takes:
 
 * `price`
-* `taxRate`
+* `tax_rate`
 
 Return the final price after tax.
 
@@ -341,62 +330,41 @@ Then call it, store the result in a variable, and print it.
 
 ### Exercise 5: scope
 
-Create a global variable called `status` with the value `"outside"`.
+Create a variable `status <- "outside"`.
 
-Write a function called `showStatus` that creates a local variable also called `status` with the value `"inside"` and prints it.
+Write a function called `show_status` that creates a local variable also called `status <- "inside"` and prints it.
 
 Then:
 
 * call the function
-* print the global `status`
+* print the outer `status`
 
 ## Go further
 
-### A. Let TypeScript infer the type
+### A. Vectorized thinking
 
-```ts
-const city = "Bowie";
+```r
+numbers <- c(1, 2, 3, 4, 5)
+numbers * 10
 ```
 
-TypeScript can often infer the type without you writing `: string`.
+### B. Sequence shorthand
 
-### B. Narrowing in conditionals
-
-```ts
-function printValue(value: string | number): void {
-  if (typeof value === "string") {
-    console.log(value.toUpperCase());
-  } else {
-    console.log(value.toFixed(2));
-  }
-}
+```r
+1:5
 ```
 
-This is one of the big TypeScript advantages: the type system narrows based on runtime checks. ([TypeScript][5])
+### C. More natural text output
 
-### C. Prefer `const` unless you need reassignment
-
-```ts
-const siteName = "Lab Tracker";
-let retryCount = 3;
+```r
+name <- "Anthony"
+cat("Hello,", name, "\n")
 ```
-
-That matches the handbook guidance around `const` and `let`. ([TypeScript][4])
 
 ## Docs to keep open
 
-* TypeScript docs home: ([TypeScript][7])
-* TypeScript 6.0 release notes: ([TypeScript][1])
-* Variable declarations: ([TypeScript][4])
-* Narrowing and control-flow analysis: ([TypeScript][5])
-* Download / setup: ([TypeScript][3])
+* CRAN and R Project home pages for current release info and manuals.
+* “An Introduction to R,” which covers variables, vectors, control flow, and functions.
+* Posit’s RStudio Desktop page if you want an R-focused IDE alongside IntelliJ.
 
-Submit your Exercise 1–5 solutions for grading.
-
-[1]: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-6-0.html?utm_source=chatgpt.com "Documentation - TypeScript 6.0"
-[2]: https://www.typescriptlang.org/?utm_source=chatgpt.com "TypeScript: JavaScript With Syntax For Types."
-[3]: https://www.typescriptlang.org/download/?utm_source=chatgpt.com "How to set up TypeScript"
-[4]: https://www.typescriptlang.org/docs/handbook/variable-declarations.html?utm_source=chatgpt.com "Documentation - Variable Declaration"
-[5]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html?utm_source=chatgpt.com "Documentation - Narrowing"
-[6]: https://www.typescriptlang.org/docs/handbook/iterators-and-generators.html?utm_source=chatgpt.com "Documentation - Iterators and Generators"
-[7]: https://www.typescriptlang.org/docs/?utm_source=chatgpt.com "The starting point for learning TypeScript"
+Submit your Exercise 1–5 R solutions for grading.

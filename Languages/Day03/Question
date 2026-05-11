@@ -1,255 +1,416 @@
-Let’s go.
+Excellent — now we switch to **SQL with PostgreSQL**.
 
-## Week 1, next concept: Loops
+## Week 1 Day 3
 
-Loops repeat work so you do not have to write the same code again and again. In Python, the main loop forms are `for` and `while`. They are part of Python’s core control-flow tools. ([Python documentation][1])
+**Language of the day:** SQL using PostgreSQL
+**Version for this course:** **PostgreSQL 18.3**. PostgreSQL’s current docs page shows 18 as the current major version, and the release announcement on that page lists **18.3** on February 26, 2026. ([PostgreSQL][1])
 
-## 1. `for` loops
+## How SQL feels different from Python and TypeScript
 
-A `for` loop goes through each item in a sequence or iterable.
+Python and TypeScript are mostly about telling the computer **step by step** what to do.
 
-```python
-fruits = ["apple", "banana", "orange"]
+SQL is different. You usually describe **what data you want**, and the database figures out how to get it. PostgreSQL’s tutorial explains that you retrieve data with `SELECT`, choose columns in the select list, choose tables in the `FROM` clause, and optionally restrict rows with a qualification such as `WHERE`. ([Postgres Professional][2])
 
-for fruit in fruits:
-    print(fruit)
+So for Week 1, the same ideas show up differently:
+
+* variables become **selected values, aliases, and expressions**
+* conditionals become **`CASE WHEN`**
+* loops become **working across many rows at once**
+* functions become **built-in SQL functions and expressions**
+* scope becomes **query parts like aliases and CTEs**
+
+## Setup
+
+Use **PostgreSQL**. The PostgreSQL docs site has the current documentation for version 18, and the official download page is the normal place to install it locally. ([PostgreSQL][1])
+
+## 1. Variables, SQL-style
+
+SQL does not use normal beginner variables the way Python or TypeScript do. Instead, you often work with:
+
+* literal values
+* computed expressions
+* aliases using `AS`
+
+Example:
+
+```sql
+SELECT
+    'Anthony' AS name,
+    32 AS age,
+    true AS wants_web_apps;
 ```
 
-This prints each fruit one at a time.
+This returns one row with three named columns.
 
-### Real-world example: web app product list
+### Python comparison
+
+Python:
 
 ```python
-products = ["keyboard", "mouse", "monitor"]
-
-for product in products:
-    print(f"Show product card for: {product}")
+name = "Anthony"
+age = 32
+wants_web_apps = True
 ```
 
-### Real-world example: automation reminder list
+TypeScript:
+
+```ts
+const name: string = "Anthony";
+const age: number = 32;
+const wantsWebApps: boolean = true;
+```
+
+PostgreSQL:
+
+```sql
+SELECT
+    'Anthony' AS name,
+    32 AS age,
+    true AS wants_web_apps;
+```
+
+In SQL, you often **name output columns**, rather than storing values in mutable variables.
+
+### Real-world example: online order total
+
+```sql
+SELECT
+    'basketball' AS product_name,
+    3.23 AS item_price,
+    25 AS quantity,
+    3.23 * 25 AS total_cost;
+```
+
+### Real-world example: scientific conversion
+
+```sql
+SELECT
+    22.5 AS celsius,
+    (22.5 * 9.0 / 5.0) + 32 AS fahrenheit;
+```
+
+## 2. Conditionals with `CASE`
+
+In PostgreSQL, the SQL-standard conditional expression is `CASE`. PostgreSQL documents both searched `CASE` and simple `CASE`, and notes that it behaves like `if/else` logic in query form. ([PostgreSQL][3])
+
+### Basic example
+
+```sql
+SELECT
+    73 AS age,
+    CASE
+        WHEN 73 >= 18 THEN 'Adult'
+        ELSE 'Minor'
+    END AS age_group;
+```
+
+### Real-world example: password check
+
+```sql
+SELECT
+    8 AS password_length,
+    CASE
+        WHEN 8 < 8 THEN 'Password too short'
+        ELSE 'Password length okay'
+    END AS password_status;
+```
+
+### Real-world example: shipping decision
+
+```sql
+SELECT
+    99 AS order_total,
+    false AS is_member,
+    CASE
+        WHEN 99 >= 50 OR false THEN 'Free shipping'
+        ELSE 'Shipping fee applies'
+    END AS shipping_status;
+```
+
+### Compare with Python and TypeScript
+
+Python:
 
 ```python
-tasks = ["email client", "backup files", "update report"]
+if age >= 18:
+    print("Adult")
+else:
+    print("Minor")
+```
 
+TypeScript:
+
+```ts
+if (age >= 18) {
+  console.log("Adult");
+} else {
+  console.log("Minor");
+}
+```
+
+PostgreSQL:
+
+```sql
+SELECT CASE
+    WHEN age >= 18 THEN 'Adult'
+    ELSE 'Minor'
+END;
+```
+
+## 3. Loops, SQL-style
+
+SQL usually does not teach loops first. Instead, it works over **sets of rows**. PostgreSQL’s tutorial shows that `SELECT` queries a table and returns rows matching the requested columns and conditions. ([Postgres Professional][2])
+
+Think of this as “looping over all rows,” but declaratively.
+
+### Example table idea
+
+Imagine a table called `tasks`:
+
+```sql
+SELECT task_name
+FROM tasks;
+```
+
+That is conceptually similar to:
+
+Python:
+
+```python
 for task in tasks:
-    print(f"Reminder: {task}")
+    print(task)
 ```
 
-### Real-world example: scientific measurements
+TypeScript:
 
-```python
-measurements = [21.5, 22.1, 21.8]
-
-for measurement in measurements:
-    print(f"Measurement recorded: {measurement}")
+```ts
+for (const task of tasks) {
+  console.log(task);
+}
 ```
 
-## 2. `range()`
+SQL:
 
-You will often see `for` used with `range()`, which produces a sequence of numbers.
-
-```python
-for number in range(5):
-    print(number)
+```sql
+SELECT task_name
+FROM tasks;
 ```
 
-This prints:
+The database applies the query to every row.
 
-```python
-0
-1
-2
-3
-4
+### Example with filtering
+
+```sql
+SELECT task_name
+FROM tasks
+WHERE is_done = false;
 ```
 
-A very common beginner gotcha:
-`range(5)` stops **before** 5.
+This is like “loop through all tasks, but only keep unfinished ones.”
 
-You can also control the start and step:
+## 4. Functions and expressions in SQL
 
-```python
-for number in range(2, 11, 2):
-    print(number)
+SQL uses lots of built-in functions and expressions. PostgreSQL supports many built-in functions and operators as part of normal query writing. ([PostgreSQL][3])
+
+### Example: compute taxed price
+
+```sql
+SELECT
+    100 AS price,
+    0.06 AS tax_rate,
+    100 + (100 * 0.06) AS final_price;
 ```
 
-That prints even numbers from 2 through 10. Python’s tutorial and built-in functions docs cover `for` and `range()` directly. ([Python documentation][1])
+### Example: string building
 
-## 3. `while` loops
-
-A `while` loop keeps running as long as a condition stays true.
-
-```python
-count = 1
-
-while count <= 3:
-    print(count)
-    count += 1
+```sql
+SELECT
+    'Anthony' AS name,
+    'Hello, ' || 'Anthony' || '!' AS greeting;
 ```
 
-This prints:
+In PostgreSQL, `||` concatenates text.
 
-```python
-1
-2
-3
+### Example: reusable query piece with a CTE
+
+A Common Table Expression, or CTE, gives a temporary named result for one query.
+
+```sql
+WITH order_info AS (
+    SELECT
+        100 AS price,
+        0.06 AS tax_rate
+)
+SELECT
+    price,
+    tax_rate,
+    price + (price * tax_rate) AS final_price
+FROM order_info;
 ```
 
-Important:
-If the condition never becomes false, the loop can run forever.
+That starts to feel a little like defining a reusable block.
 
-## Comparing `for` and `while`
+## 5. Scope, SQL-style
 
-Use `for` when:
+SQL scope is different from function scope in Python and TypeScript. In beginner PostgreSQL, the closest ideas are:
 
-* you know what items you want to loop over
-* you want to repeat a fixed number of times
+* column aliases
+* table aliases
+* CTE names that exist only for one query
 
-Use `while` when:
+### Example: alias scope
 
-* you want to keep going until a condition changes
-
-## Real-world examples
-
-### Web app example: show menu items
-
-```python
-menu_items = ["Home", "Products", "Cart", "Profile"]
-
-for item in menu_items:
-    print(f"Render nav link: {item}")
+```sql
+SELECT
+    100 AS price,
+    0.06 AS tax_rate;
 ```
 
-### Automation example: retry until success
+Here `price` and `tax_rate` are names in that query result.
 
-```python
-attempt = 1
+### Example: CTE scope
 
-while attempt <= 3:
-    print(f"Trying connection attempt {attempt}")
-    attempt += 1
+```sql
+WITH course_info AS (
+    SELECT 'PostgreSQL Basics' AS course_name
+)
+SELECT course_name
+FROM course_info;
 ```
 
-### Scientific example: total a set of readings
+`course_info` exists only for that statement.
 
-```python
-readings = [10, 12, 9, 11]
-total = 0
+That is not identical to Python local scope, but it is the closest beginner analogy:
+**some names exist only inside a single query context**.
 
-for reading in readings:
-    total += reading
+## A small practice table
 
-print(f"Total = {total}")
+For today, use this table so your exercises feel realistic:
+
+```sql
+CREATE TABLE products (
+    product_name TEXT,
+    item_price NUMERIC,
+    quantity INT
+);
+
+INSERT INTO products (product_name, item_price, quantity)
+VALUES
+    ('basketball', 3.23, 25),
+    ('soccer ball', 12.50, 4),
+    ('tennis racket', 59.99, 2);
 ```
 
-## Python-specific notes
+And another one:
 
-Indentation matters inside loops, just like with conditionals. Compound statements in Python use headers ending with a colon and an indented block underneath. ([Python documentation][2])
+```sql
+CREATE TABLE users (
+    name TEXT,
+    age INT,
+    role TEXT
+);
 
-```python
-for number in range(3):
-    print(number)
+INSERT INTO users (name, age, role)
+VALUES
+    ('Anthony', 32, 'viewer'),
+    ('Maya', 17, 'editor'),
+    ('Jordan', 45, 'admin');
 ```
-
-## Compare to the rest of your track
-
-Later, the same idea will look different in other languages:
-
-* TypeScript has `for`, `while`, and array methods like `forEach`
-* PostgreSQL often uses set-based queries instead of regular loops
-* Rust has `for`, `while`, and `loop`
-* Go mainly uses `for`
-* R often uses `for`, `while`, and vectorized operations
-* Zig and Julia both support looping, but with their own syntax
-
-So the shared idea is:
-**repeat work over data or until a condition changes**.
 
 ## Five exercises
 
-### Exercise 1: count from 1 to 5
+### Exercise 1: SQL-style variables
 
-Use a `for` loop with `range()` to print the numbers 1 through 5.
+Write a query that returns one row with these columns:
 
-### Exercise 2: print task reminders
+* your name as `name`
+* your age as `age`
+* `true` or `false` as `wants_web_apps`
 
-Create a list of three tasks and use a `for` loop to print each one.
+Use `AS` for each column.
 
-### Exercise 3: sum numbers
+### Exercise 2: conditional with `CASE`
 
-Create a list of numbers and use a loop to calculate the total.
+Write a query that returns:
 
-Example idea:
+* `password_length`
+* a second column named `password_status`
 
-```python
-numbers = [4, 7, 2, 9]
-```
+Rules:
 
-### Exercise 4: countdown with `while`
+* if password length is less than 8, return `'Password too short'`
+* otherwise return `'Password length okay'`
 
-Use a `while` loop to print:
+### Exercise 3: set-based looping idea
 
-* 3
-* 2
-* 1
-* `"Lift off!"`
+Using the `products` table above, write a query that returns:
 
-### Exercise 5: classify temperatures
+* `product_name`
+* `quantity`
 
-Create a list of temperatures and loop through them.
-For each temperature:
+for every row in the table.
 
-* print `"Cold"` if it is below 20
-* otherwise print `"Warm"`
+### Exercise 4: function/expression
+
+Write a query that returns:
+
+* `price`
+* `tax_rate`
+* `final_price`
+
+using `100` as the price and `0.06` as the tax rate.
+
+### Exercise 5: scope-like behavior with a CTE
+
+Write a query using `WITH` that creates a temporary result named `course_info` with one column:
+
+* `course_name`
+
+Set it to `'PostgreSQL Basics'`, then select `course_name` from that CTE.
 
 ## Go further
 
-### A. Loop with index
+### A. Classify roles with `CASE`
 
-```python
-products = ["keyboard", "mouse", "monitor"]
-
-for index, product in enumerate(products):
-    print(index, product)
+```sql
+SELECT
+    name,
+    role,
+    CASE
+        WHEN role = 'admin' THEN 'Full access'
+        WHEN role = 'editor' THEN 'Can edit content'
+        WHEN role = 'viewer' THEN 'Read-only access'
+        ELSE 'Unknown role'
+    END AS access_level
+FROM users;
 ```
 
-### B. Build a running total
+### B. Compute totals for all products
 
-```python
-sales = [100, 200, 150]
-running_total = 0
-
-for sale in sales:
-    running_total += sale
-    print(f"Running total: {running_total}")
+```sql
+SELECT
+    product_name,
+    item_price,
+    quantity,
+    item_price * quantity AS total_cost
+FROM products;
 ```
 
-### C. Stop early with `break`
+### C. Filter rows like a conditional
 
-```python
-for number in range(10):
-    if number == 5:
-        break
-    print(number)
+```sql
+SELECT name, age
+FROM users
+WHERE age >= 18;
 ```
 
-### D. Skip one item with `continue`
+## Docs to keep open
 
-```python
-for number in range(5):
-    if number == 2:
-        continue
-    print(number)
-```
+* PostgreSQL current docs and version 18 docs page. ([PostgreSQL][1])
+* PostgreSQL tutorial: querying a table with `SELECT`. ([Postgres Professional][2])
 
-## Docs
+Submit your Exercise 1–5 SQL queries for grading.
 
-* Python tutorial: control flow tools ([Python documentation][1])
-* Python language reference: compound statements ([Python documentation][2])
-* Built-in functions like `range()` ([Python documentation][3])
-
-Submit your Exercise 1–5 solutions for grading.
-
-[1]: https://docs.python.org/3/tutorial/index.html?utm_source=chatgpt.com "The Python Tutorial — Python 3.14.4 documentation"
-[2]: https://docs.python.org/3/reference/compound_stmts.html?utm_source=chatgpt.com "8. Compound statements"
-[3]: https://docs.python.org/3/library/functions.html?utm_source=chatgpt.com "Built-in Functions"
+[1]: https://www.postgresql.org/docs/current/backup-manifest-files.html?utm_source=chatgpt.com "Documentation: 18: 70.2. Backup Manifest File Object"
+[2]: https://postgrespro.com/docs/postgresql/current/tutorial-select?utm_source=chatgpt.com "PostgreSQL : Documentation: 18: 2.5. Querying a Table"
+[3]: https://www.postgresql.org/docs/current/trigger-datachanges.html?utm_source=chatgpt.com "Documentation: 18: 37.2. Visibility of Data Changes"

@@ -1,4 +1,4 @@
-package Day09
+package Day05
 
 import "fmt"
 
@@ -26,7 +26,7 @@ func main2() {
 func main3() {
 	tasks := []string{"Take me to lunch", "grab dinner with the homie", "Buy sandwich"}
 
-	for index, task := range tasks {
+	for _, task := range tasks {
 		fmt.Println(task)
 	}
 }

@@ -1,0 +1,240 @@
+## Week 1, next concept: Functions
+
+A function is a reusable block of code that you name and call later. In Python, functions are defined with `def`, followed by a name, parentheses for parameters, and an indented body. Python’s tutorial also notes that a function body can begin with a docstring, and that functions without an explicit `return` still return `None`. ([Python documentation][1])
+
+## Basic shape
+
+```python
+def greet():
+    print("Hello!")
+```
+
+Calling it:
+
+```python
+greet()
+```
+
+## Function with input
+
+```python
+def greet_user(name):
+    print(f"Hello, {name}!")
+```
+
+Calling it:
+
+```python
+greet_user("Anthony")
+```
+
+Here, `name` is a **parameter**. `"Anthony"` is the **argument** passed in when the function is called. Python places arguments into the function’s local symbol table when the call happens. ([Python documentation][1])
+
+## Function with a return value
+
+Some functions print. Others compute and return a value.
+
+```python
+def square(number):
+    return number * number
+
+result = square(5)
+print(result)
+```
+
+That prints `25`.
+
+Python’s docs point out an important distinction:
+
+* `print()` shows something on the screen
+* `return` sends a value back to the caller ([Python documentation][1])
+
+## Real-world examples
+
+### 1. Web app example: calculate item total
+
+```python
+def calculate_total(price, quantity):
+    return price * quantity
+
+cart_total = calculate_total(19.99, 3)
+print(cart_total)
+```
+
+### 2. Automation example: build reminder message
+
+```python
+def build_reminder(task_name, days_left):
+    return f"Reminder: {task_name} is due in {days_left} day(s)."
+
+message = build_reminder("Submit weekly report", 2)
+print(message)
+```
+
+### 3. Scientific computing example: convert Celsius to Fahrenheit
+
+```python
+def celsius_to_fahrenheit(celsius):
+    return (celsius * 9 / 5) + 32
+
+converted = celsius_to_fahrenheit(22.5)
+print(converted)
+```
+
+## Local variables
+
+Variables created inside a function are local to that function. Python’s tutorial explains that function execution creates a new local symbol table for that call. ([Python documentation][1])
+
+```python
+def show_message():
+    message = "Inside the function"
+    print(message)
+
+show_message()
+```
+
+Trying to use `message` outside the function would fail, because it only exists inside that function.
+
+## Functions can be reused
+
+This is one of the biggest reasons functions matter.
+
+```python
+def greet_user(name):
+    print(f"Hello, {name}!")
+
+greet_user("Anthony")
+greet_user("Maya")
+greet_user("Jordan")
+```
+
+One definition, many uses.
+
+## Default parameter values
+
+Python supports default parameter values, so a function can work even if you do not pass every argument. The tutorial covers this in the section after function definitions. ([Python documentation][1])
+
+```python
+def greet_user(name="friend"):
+    print(f"Hello, {name}!")
+
+greet_user()
+greet_user("Anthony")
+```
+
+## Compare to the rest of your track
+
+This same idea appears everywhere:
+
+* **TypeScript** uses `function` or arrow functions
+* **PostgreSQL** often uses queries, expressions, and later stored functions
+* **Rust** uses `fn`
+* **Go** uses `func`
+* **R** uses `function(...)`
+* **Zig/Julia** both have their own function syntax
+
+The core idea stays the same:
+**give code a name, pass in data, get behavior or a result back**.
+
+## Five exercises
+
+### Exercise 1: simple greeting function
+
+Write a function called `say_hello` that prints:
+
+```python
+Hello!
+```
+
+Then call it once.
+
+### Exercise 2: greet a person
+
+Write a function called `greet_person` that takes one parameter called `name` and prints:
+
+```python
+Hello, Anthony!
+```
+
+Use the passed-in value, not a hardcoded name.
+
+Then call it with your name.
+
+### Exercise 3: multiply two numbers
+
+Write a function called `multiply_numbers` that takes two parameters and returns their product.
+
+Then:
+
+* call the function
+* store the result in a variable
+* print the result
+
+### Exercise 4: shipping status
+
+Write a function called `shipping_message` that takes one parameter called `order_total`.
+
+Rules:
+
+* if `order_total >= 50`, return `"Free shipping"`
+* otherwise, return `"Shipping fee applies"`
+
+Then call the function with two different values and print both results.
+
+### Exercise 5: temperature label
+
+Write a function called `temperature_label` that takes one parameter called `temperature_c`.
+
+Rules:
+
+* below 0 → return `"Frozen"`
+* from 0 up to but not including 20 → return `"Cold"`
+* otherwise → return `"Warm"`
+
+Then call it on at least three different temperatures and print the results.
+
+## Go further
+
+### A. Function that returns instead of prints
+
+```python
+def build_username(first_name, last_name):
+    return f"{first_name.lower()}.{last_name.lower()}"
+
+username = build_username("Anthony", "Smith")
+print(username)
+```
+
+### B. Reuse a function in a loop
+
+```python
+def is_cold(temp):
+    return temp < 20
+
+temperatures = [10, 25, 18]
+
+for temp in temperatures:
+    print(is_cold(temp))
+```
+
+### C. Function with a default value
+
+```python
+def welcome_user(name="guest"):
+    print(f"Welcome, {name}!")
+
+welcome_user()
+welcome_user("Anthony")
+```
+
+## Docs
+
+* Python tutorial: control flow and defining functions. ([Python documentation][1])
+* Python language reference: function definitions are executable statements and bind a function object to a name. ([Python documentation][2])
+* Python built-in functions reference, for things like `print()`. ([Python documentation][3])
+
+Submit your Exercise 1–5 solutions for grading.
+
+[1]: https://docs.python.org/3/tutorial/controlflow.html?utm_source=chatgpt.com "4. More Control Flow Tools — Python 3.14.4 documentation"
+[2]: https://docs.python.org/3/reference/compound_stmts.html?utm_source=chatgpt.com "8. Compound statements"
+[3]: https://docs.python.org/3/library/functions.html?utm_source=chatgpt.com "Built-in Functions"

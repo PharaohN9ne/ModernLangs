@@ -1,332 +1,426 @@
-## Week 1, next concept: Scope
+## Week 1 Day 5
 
-Scope is **where a variable can be accessed**.
+**Language of the day:** Go
+**Version for this course:** **Go 1.26**. The official Go release notes say Go 1.26 arrived in February 2026, and the Go blog announced it on February 10, 2026. ([Go][1])
 
-The big idea:
+## How Go compares to what you’ve already learned
 
-* a variable created **inside** a function usually belongs only to that function
-* a variable created **outside** a function is usually available more broadly
-* Python determines scopes textually, and function calls create a new local symbol table for each call. ([Python documentation][1])
+Go will feel simpler than Rust and more explicit than Python.
 
-## Why scope matters
+Quick comparison:
 
-Scope prevents variables from colliding with each other and helps keep code organized.
+* **Python**: flexible, minimal syntax
+* **TypeScript**: JavaScript-style with types
+* **PostgreSQL**: query language, set-based
+* **Rust**: strict typing and immutability by default
+* **Go**: simple, direct, strongly typed, and built around clarity and practicality ([Go][2])
 
-## 1. Local scope
+## Setup
 
-A variable created inside a function is **local** to that function.
+The official Go site provides downloads, release notes, and the standard library docs. ([Go][3])
 
-```python
-def show_order():
-    order_total = 42.50
-    print(order_total)
+## 1. Variables in Go
 
-show_order()
+Go uses `var` or short declaration `:=`.
+
+### Basic example
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    name := "Anthony"
+    age := 32
+    wantsWebApps := true
+
+    fmt.Println(name, age, wantsWebApps)
+}
 ```
 
-This works because `order_total` is used inside the function where it was created.
+### With explicit type
 
-But this would fail:
+```go
+package main
 
-```python
-def show_order():
-    order_total = 42.50
+import "fmt"
 
-show_order()
-print(order_total)
+func main() {
+    var name string = "Anthony"
+    var age int = 32
+    var wantsWebApps bool = true
+
+    fmt.Println(name, age, wantsWebApps)
+}
 ```
 
-Why? Because `order_total` only exists inside `show_order()`.
+### Compare with Python and Rust
 
-Python’s tutorial explains that each function call creates a new local symbol table. ([Python documentation][2])
-
-## 2. Global scope
-
-A variable defined at the top level of a file is in the module’s global scope.
+Python:
 
 ```python
-site_name = "Science Tracker"
-
-def show_site():
-    print(site_name)
-
-show_site()
+name = "Anthony"
 ```
 
-This works because the function is reading a global variable.
+Rust:
 
-Python’s docs note that the global scope of a function defined in a module is that module’s namespace. ([Python documentation][1])
-
-## 3. Local vs global with the same name
-
-A local variable can have the same name as a global variable, and the local one wins inside the function.
-
-```python
-name = "Global Anthony"
-
-def show_name():
-    name = "Local Anthony"
-    print(name)
-
-show_name()
-print(name)
+```rust
+let name = "Anthony";
 ```
 
-Output:
+Go:
 
-```python
-Local Anthony
-Global Anthony
+```go
+name := "Anthony"
 ```
 
-That is because the local `name` exists only inside the function.
+### Real-world example: web app cart total
 
-## 4. Assigning inside a function makes a name local
+```go
+package main
 
-This is a very important Python rule:
+import "fmt"
 
-If a variable is assigned anywhere in a function body, Python treats it as local unless you explicitly declare it `global`. The Python FAQ states this directly. ([Python documentation][3])
+func main() {
+    productName := "basketball"
+    itemPrice := 3.23
+    quantity := 25
+    totalCost := itemPrice * float64(quantity)
 
-Example:
-
-```python
-count = 10
-
-def update_count():
-    count = 5
-    print(count)
-
-update_count()
-print(count)
+    fmt.Println(productName, totalCost)
+}
 ```
 
-Output:
+### Real-world example: automation reminder
 
-```python
-5
-10
+```go
+package main
+
+import "fmt"
+
+func main() {
+    taskName := "Send weekly report"
+    daysLeft := 2
+    isUrgent := daysLeft <= 1
+
+    fmt.Println(taskName, daysLeft, isUrgent)
+}
 ```
 
-The function changed a local `count`, not the global one.
+## 2. Conditionals in Go
 
-## 5. Using `global`
+Go uses `if`, `else if`, and `else`. Like Rust, Go requires a real boolean condition.
 
-If you really want to assign to a global variable from inside a function, you can use `global`.
+```go
+package main
 
-```python
-count = 10
+import "fmt"
 
-def update_count():
-    global count
-    count = 5
+func main() {
+    age := 17
 
-update_count()
-print(count)
+    if age >= 18 {
+        fmt.Println("Adult")
+    } else {
+        fmt.Println("Minor")
+    }
+}
 ```
 
-Now the global `count` becomes `5`.
+### Web app example: role access
 
-Python’s language reference says the `global` statement applies to the entire current scope. ([Python documentation][4])
+```go
+package main
 
-Important beginner advice:
-Try not to overuse `global`. It is usually cleaner to return values from functions instead.
+import "fmt"
 
-## 6. Nested functions and `nonlocal`
+func main() {
+    role := "editor"
 
-If one function is inside another, the inner function can read values from the outer function. If you want the inner function to **reassign** a variable from the enclosing function, use `nonlocal`. Python’s glossary and language reference describe this behavior. ([Python documentation][5])
-
-```python
-def outer():
-    message = "start"
-
-    def inner():
-        nonlocal message
-        message = "updated"
-
-    inner()
-    print(message)
-
-outer()
+    if role == "admin" {
+        fmt.Println("Full access")
+    } else if role == "editor" {
+        fmt.Println("Can edit content")
+    } else if role == "viewer" {
+        fmt.Println("Read-only access")
+    } else {
+        fmt.Println("Unknown role")
+    }
+}
 ```
 
-This prints:
+## 3. Loops in Go
 
-```python
-updated
+Go’s big beginner quirk: it mainly uses **one keyword**, `for`, for looping.
+
+### Count from 1 to 5
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    for count := 1; count <= 5; count++ {
+        fmt.Println(count)
+    }
+}
 ```
 
-## Real-world examples
+### Loop through a slice
 
-### 1. Web app example: page title
+```go
+package main
 
-```python
-page_title = "Dashboard"
+import "fmt"
 
-def show_page():
-    print(page_title)
+func main() {
+    tasks := []string{"go to the store", "make dinner", "pick up baby"}
 
-show_page()
+    for _, task := range tasks {
+        fmt.Println(task)
+    }
+}
 ```
 
-`page_title` is global here, and the function reads it.
+`range` is very common in Go for iterating over slices, arrays, maps, strings, and more.
 
-### 2. Automation example: local retry counter
+### While-style loop in Go
 
-```python
-def send_reminders():
-    retry_count = 3
-    print(retry_count)
+Go does not have a separate `while` keyword. You use `for` as a while-style loop:
 
-send_reminders()
+```go
+package main
+
+import "fmt"
+
+func main() {
+    countdown := 3
+
+    for countdown > 0 {
+        fmt.Println(countdown)
+        countdown--
+    }
+
+    fmt.Println("Lift off!")
+}
 ```
 
-`retry_count` belongs only to that function.
+## 4. Functions in Go
 
-### 3. Scientific computing example: reusable conversion
+Go defines functions with `func`. Parameters have types, and return types come after the parameter list.
 
-```python
-conversion_factor = 9 / 5
+### Basic function
 
-def celsius_to_fahrenheit(celsius):
-    return (celsius * conversion_factor) + 32
+```go
+package main
 
-print(celsius_to_fahrenheit(20))
+import "fmt"
+
+func sayHello() {
+    fmt.Println("Hello!")
+}
+
+func main() {
+    sayHello()
+}
 ```
 
-The function reads a value from outer scope.
+### Function with parameter
 
-## Better practice: return values instead of changing globals
+```go
+package main
 
-Instead of this:
+import "fmt"
 
-```python
-total = 0
+func greetPerson(name string) {
+    fmt.Println("Hello,", name)
+}
 
-def add_amount(amount):
-    global total
-    total += amount
+func main() {
+    greetPerson("Anthony")
+}
 ```
 
-Prefer this:
+### Function with return value
 
-```python
-def add_amount(total, amount):
-    return total + amount
+```go
+package main
 
-total = 0
-total = add_amount(total, 5)
-print(total)
+import "fmt"
+
+func multiplyNumbers(num1 int, num2 int) int {
+    return num1 * num2
+}
+
+func main() {
+    result := multiplyNumbers(3, 6)
+    fmt.Println(result)
+}
 ```
 
-That style is easier to test and reason about.
+### Real-world example: tax calculation
 
-## Compare to the rest of your track
+```go
+package main
 
-Every language has scope, but the details differ:
+import "fmt"
 
-* **TypeScript** has block scope with `let` and `const`
-* **PostgreSQL** handles scope differently inside queries, CTEs, and functions
-* **Rust** has strict lexical scope and ownership rules
-* **Go** has block scope and short variable declarations
-* **R** has function environments and lexical scoping
-* **Zig/Julia** each have their own rules for local and global bindings
+func addTax(price float64, taxRate float64) float64 {
+    return price + (price * taxRate)
+}
 
-The shared idea is:
-**where a name exists, and which value that name refers to**.
+func main() {
+    result := addTax(100.0, 0.06)
+    fmt.Println(result)
+}
+```
+
+## 5. Scope in Go
+
+Go has block scope. A variable exists inside the block where it is declared.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    status := "outside"
+
+    {
+        status := "inside"
+        fmt.Println(status)
+    }
+
+    fmt.Println(status)
+}
+```
+
+That prints:
+
+```go
+inside
+outside
+```
+
+This should look familiar from Rust and Python.
+
+## Compare to your earlier languages
+
+### Python
+
+* indentation-based blocks
+* `print()`
+* `def`
+
+### TypeScript
+
+* braces
+* `console.log()`
+* `function`
+
+### Rust
+
+* braces
+* `println!`
+* `fn`
+
+### Go
+
+* braces
+* `fmt.Println()`
+* `func`
+
+Go is often the most “plain spoken” of the programming languages you’ve seen so far.
 
 ## Five exercises
 
-### Exercise 1: local variable
+### Exercise 1: variables
 
-Write a function called `show_city` that creates a local variable `city` with your city name and prints it.
+Create variables for:
 
-Then call the function.
+* your name
+* your age
+* whether you want to build web apps
 
-### Exercise 2: global read
+Print them with `fmt.Println()`.
 
-Create a global variable called `course_name` and set it to a string.
+### Exercise 2: conditional
 
-Write a function called `print_course` that prints `course_name`.
+Create a variable `passwordLength`.
 
-Then call the function.
+Rules:
 
-### Exercise 3: local vs global
+* if it is less than 8, print `"Password too short"`
+* otherwise, print `"Password length okay"`
 
-Create a global variable called `status` with the value `"outside"`.
+### Exercise 3: loop
 
-Write a function called `show_status` that creates a local variable also called `status` with the value `"inside"` and prints it.
+Create a slice of three tasks and use a `for ... range` loop to print each task.
 
-After calling the function, print the global `status`.
+### Exercise 4: function
 
-### Exercise 4: return instead of global
+Write a function called `addTax` that takes:
 
-Write a function called `add_tax` that takes `price` and `tax_rate`, then returns the final price.
+* `price`
+* `taxRate`
 
-Call it, store the result in a variable, and print it.
+Return the final price after tax.
 
-### Exercise 5: nested scope
+Then call it, store the result in a variable, and print it.
 
-Write a function called `outer_message` that:
-* creates a variable `message = "hello"`
-* defines an inner function that prints `message`
-* calls the inner function
+### Exercise 5: scope
 
-Then call `outer_message()`.
+In `main`, create a variable `status` with the value `"outside"`.
+
+Then create an inner block:
+
+* inside the block, create another `status` with the value `"inside"`
+* print the inner `status`
+
+After the block:
+
+* print the outer `status`
 
 ## Go further
 
-### A. See scope behavior clearly
+### A. Ignore the index with `_`
 
-```python
-name = "outside"
-
-def demo():
-    name = "inside"
-    print(name)
-
-demo()
-print(name)
+```go
+for _, task := range tasks {
+    fmt.Println(task)
+}
 ```
 
-### B. Use `nonlocal`
+### B. Use the index too
 
-```python
-def counter():
-    count = 0
-
-    def increase():
-        nonlocal count
-        count += 1
-        print(count)
-
-    increase()
-    increase()
-
-counter()
+```go
+for index, task := range tasks {
+    fmt.Println(index, task)
+}
 ```
 
-### C. Watch out for accidental locals
+### C. While-style loop
 
-```python
-score = 10
-
-def update():
-    score = score + 1
+```go
+countdown := 3
+for countdown > 0 {
+    fmt.Println(countdown)
+    countdown--
+}
 ```
 
-That causes an error, because Python treats `score` as local when it sees the assignment. The FAQ explains this local/global rule. ([Python documentation][3])
+## Docs to keep open
 
-## Docs
+* Go home/docs/downloads. ([Go][2])
+* Official release history. ([Go][4])
+* Go 1.26 release notes. ([Go][1])
 
-* Python tutorial: more control flow tools and function basics. ([Python documentation][2])
-* Python tutorial: classes section with the scope discussion. ([Python documentation][1])
-* Python FAQ: local and global variable rules. ([Python documentation][3])
-* Python language reference: `global` and `nonlocal`. ([Python documentation][4])
+Submit your Exercise 1–5 Go solutions for grading.
 
-Submit your Exercise 1–5 solutions for grading.
-
-[1]: https://docs.python.org/3/tutorial/classes.html?utm_source=chatgpt.com "9. Classes — Python 3.14.4 documentation"
-[2]: https://docs.python.org/3/tutorial/controlflow.html?utm_source=chatgpt.com "4. More Control Flow Tools — Python 3.14.4 documentation"
-[3]: https://docs.python.org/3/faq/programming.html?utm_source=chatgpt.com "Programming FAQ — Python 3.14.4 documentation"
-[4]: https://docs.python.org/3/reference/simple_stmts.html?utm_source=chatgpt.com "7. Simple statements"
-[5]: https://docs.python.org/3/glossary.html?utm_source=chatgpt.com "Glossary — Python 3.14.4 documentation"
+[1]: https://go.dev/doc/go1.26?utm_source=chatgpt.com "Go 1.26 Release Notes"
+[2]: https://go.dev/?utm_source=chatgpt.com "The Go Programming Language"
+[3]: https://go.dev/dl/?utm_source=chatgpt.com "All releases"
+[4]: https://go.dev/doc/devel/release?utm_source=chatgpt.com "Release History"
