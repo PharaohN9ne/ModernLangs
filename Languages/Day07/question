@@ -1,0 +1,424 @@
+## Week 1 Day 7
+
+**Language of the day:** Julia
+**Version for this course:** **Julia 1.12.6**. The official Julia site currently shows “Install v1.12.6,” and the official install guidance recommends **juliaup** as the preferred installer/version manager. ([The Julia Programming Language][1])
+
+## Why Julia fits your interests
+
+Julia is especially strong for **scientific and numerical computing**, while still being general-purpose enough for scripting, data work, and even web/server-side packages. The official Julia site highlights scientific computing, data science, and web/server tooling as major parts of the ecosystem. ([The Julia Programming Language][1])
+
+## Setup
+
+The official Julia installation page recommends **juliaup**, which can install the latest stable Julia and manage multiple Julia versions. The Julia learning page also highlights **Pluto.jl** as a learning-friendly notebook environment. ([The Julia Programming Language][2])
+
+## How Julia compares to what you’ve learned
+
+Julia will feel familiar in some ways:
+
+* like Python, it is pleasant and interactive
+* like R, it is very natural for technical/scientific work
+* unlike Rust and Go, it is more dynamic and less rigid up front
+* unlike SQL, it is a normal general-purpose programming language
+
+A key Julia idea is that it is dynamic but designed for high performance, and it uses **multiple dispatch** as a core paradigm. ([The Julia Programming Language][1])
+
+---
+
+## 1. Variables in Julia
+
+Julia uses normal assignment with `=`.
+
+### Basic example
+
+```julia
+name = "Anthony"
+age = 32
+wants_web_apps = true
+
+println(name)
+println(age)
+println(wants_web_apps)
+```
+
+### One-line output
+
+```julia
+name = "Anthony"
+age = 32
+wants_web_apps = true
+
+println(name, " ", age, " ", wants_web_apps)
+```
+
+### Compare with earlier languages
+
+Python:
+
+```python
+name = "Anthony"
+```
+
+R:
+
+```r
+name <- "Anthony"
+```
+
+Julia:
+
+```julia
+name = "Anthony"
+```
+
+### Real-world example: web app cart total
+
+```julia
+product_name = "basketball"
+item_price = 3.23
+quantity = 25
+total_cost = item_price * quantity
+
+println(product_name, " ", total_cost)
+```
+
+### Real-world example: scientific conversion
+
+```julia
+celsius = 22.5
+fahrenheit = (celsius * 9 / 5) + 32
+
+println(fahrenheit)
+```
+
+---
+
+## 2. Conditionals in Julia
+
+Julia uses `if`, `elseif`, and `else`, ending the whole block with `end`.
+
+```julia
+age = 17
+
+if age >= 18
+    println("Adult")
+else
+    println("Minor")
+end
+```
+
+### Web app example: role access
+
+```julia
+role = "editor"
+
+if role == "admin"
+    println("Full access")
+elseif role == "editor"
+    println("Can edit content")
+elseif role == "viewer"
+    println("Read-only access")
+else
+    println("Unknown role")
+end
+```
+
+### Compare with Python
+
+Python:
+
+```python
+if age >= 18:
+    print("Adult")
+else:
+    print("Minor")
+```
+
+Julia:
+
+```julia
+if age >= 18
+    println("Adult")
+else
+    println("Minor")
+end
+```
+
+Main difference:
+
+* Python uses `:`
+* Julia uses `end`
+
+---
+
+## 3. Loops in Julia
+
+Julia supports `for` and `while`.
+
+### `for` loop
+
+```julia
+for count in 1:5
+    println(count)
+end
+```
+
+### Loop through a collection
+
+```julia
+tasks = ["go to the store", "make dinner", "pick up baby"]
+
+for task in tasks
+    println(task)
+end
+```
+
+### `while` loop
+
+```julia
+countdown = 3
+
+while countdown > 0
+    println(countdown)
+    countdown -= 1
+end
+
+println("Lift off!")
+```
+
+### Scientific computing angle
+
+Julia works very naturally with arrays and numerical operations:
+
+```julia
+temperatures = [10, 25, 18]
+println(temperatures .* 2)
+```
+
+That `.*` is element-wise multiplication across the whole array, which is a very Julia/scientific-computing style.
+
+---
+
+## 4. Functions in Julia
+
+Functions are defined with `function ... end`, though there is also a shorter one-line style.
+
+### Basic function
+
+```julia
+function say_hello()
+    println("Hello!")
+end
+
+say_hello()
+```
+
+### Function with parameter
+
+```julia
+function greet_person(name)
+    println("Hello, ", name, "!")
+end
+
+greet_person("Anthony")
+```
+
+### Function with return value
+
+```julia
+function multiply_numbers(num1, num2)
+    return num1 * num2
+end
+
+result = multiply_numbers(3, 6)
+println(result)
+```
+
+### Real-world example: tax calculation
+
+```julia
+function add_tax(price, tax_rate)
+    return price + (price * tax_rate)
+end
+
+final_price = add_tax(100, 0.06)
+println(final_price)
+```
+
+### Short form
+
+```julia
+add_tax(price, tax_rate) = price + (price * tax_rate)
+```
+
+---
+
+## 5. Scope in Julia
+
+For Week 1, the practical rule is:
+
+* variables created inside functions are local to that function
+* nested blocks can introduce their own local behavior depending on context
+* using functions is the clearest way to understand scope as a beginner
+
+### Example
+
+```julia
+function show_city()
+    city = "Bowie"
+    println(city)
+end
+
+show_city()
+```
+
+### Outer vs inner
+
+```julia
+status = "outside"
+
+function show_status()
+    status = "inside"
+    println(status)
+end
+
+show_status()
+println(status)
+```
+
+That should feel familiar from Python, R, Rust, and Go.
+
+---
+
+## Compare to the other languages
+
+### Python
+
+* `print()`
+* indentation
+* `def`
+
+### TypeScript
+
+* braces
+* `console.log()`
+* `function`
+
+### Rust
+
+* `fn`
+* braces
+* strict types
+
+### Go
+
+* `func`
+* braces
+* `fmt.Println()`
+
+### R
+
+* `<-`
+* `function(...)`
+
+### Julia
+
+* `=`
+* `println()`
+* `function ... end`
+
+---
+
+## Five exercises
+
+### Exercise 1: variables
+
+Create variables for:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Print them.
+
+### Exercise 2: conditional
+
+Create a variable `password_length`.
+
+Rules:
+
+* if it is less than 8, print `"Password too short"`
+* otherwise, print `"Password length okay"`
+
+### Exercise 3: loop
+
+Create an array of three tasks and use a `for` loop to print each task.
+
+### Exercise 4: function
+
+Write a function called `add_tax` that takes:
+
+* `price`
+* `tax_rate`
+
+Return the final price after tax.
+
+Then call it, store the result in a variable, and print it.
+
+### Exercise 5: scope
+
+Create a variable:
+
+```julia
+status = "outside"
+```
+
+Write a function called `show_status` that creates a local variable also called `status = "inside"` and prints it.
+
+Then:
+
+* call the function
+* print the outer `status`
+
+---
+
+## Go further
+
+### A. Short function syntax
+
+```julia
+square(x) = x * x
+println(square(5))
+```
+
+### B. Array math
+
+```julia
+numbers = [1, 2, 3, 4, 5]
+println(numbers .* 10)
+```
+
+### C. Multiple dispatch preview
+
+Multiple dispatch is one of Julia’s signature features, and the official site highlights it heavily. You do not need it yet, but here is the idea: the method Julia uses can depend on the types of the arguments. ([The Julia Programming Language][1])
+
+```julia
+describe(x::Int) = println("Integer")
+describe(x::String) = println("String")
+
+describe(5)
+describe("hello")
+```
+
+## Docs to keep open
+
+* Official Julia homepage and current install version. ([The Julia Programming Language][1])
+* Official install instructions. ([The Julia Programming Language][2])
+* Official documentation. ([Julia Documentation][3])
+* Official learning resources and Pluto notebooks. ([The Julia Programming Language][4])
+
+Submit your Exercise 1–5 Julia solutions for grading.
+
+[1]: https://julialang.org/?utm_source=chatgpt.com "The Julia Programming Language"
+[2]: https://julialang.org/install/?utm_source=chatgpt.com "Installing Julia"
+[3]: https://docs.julialang.org/?utm_source=chatgpt.com "Julia Documentation · The Julia Language"
+[4]: https://julialang.org/learning/?utm_source=chatgpt.com "Get started with Julia"

@@ -1,0 +1,46 @@
+#question1
+
+name = "bob"
+age = 34
+build_web_apps = true
+
+println(name, " ", age, " ", build_web_apps)
+
+#question2
+
+password_length = 23
+
+if password_length < 8
+println("Password too short")
+else
+println("Password length okay")
+end
+
+#question3
+
+tasks = ["go to the gym", "win the battle", "find x-23"]
+
+for task in tasks
+println(task)
+end
+
+#question4
+
+function add_tax(price, tax_rate)
+return price + (price * tax_rate)
+end
+
+final_price = add_tax(86, 0.09)
+println(final_price)
+
+#question5
+
+status = "outside"
+
+function show_status()
+status = "inside"
+println(status)
+end
+
+show_status()
+println(status)
