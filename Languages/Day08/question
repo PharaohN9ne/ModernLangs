@@ -1,0 +1,374 @@
+## Week 2 overview
+
+This week is about **data structures**.
+
+Last week, you learned how to:
+
+* store a single value
+* make decisions
+* repeat actions
+* define reusable logic
+* understand where names exist
+
+Now we move to the next layer:
+**how programs organize collections of data**.
+
+Across your 7-language track, Week 2 will cover the equivalents of:
+
+* ordered collections
+* fixed vs flexible groupings
+* key-value storage
+* uniqueness / membership checks
+
+We’ll start with **Python**, because it gives the cleanest introduction.
+
+---
+
+## Week 2 Day 1
+
+**Language of the day:** Python
+**Concept of the day:** Core data structures
+
+Today’s main Python structures:
+
+* **list**
+* **tuple**
+* **dictionary**
+* **set**
+
+Python’s tutorial introduces lists early, and the standard types docs cover tuples, sets, and dictionaries. Lists are ordered and mutable, tuples are ordered and typically used as fixed records, dictionaries store key-value pairs, and sets store unique elements. ([docs.python.org](https://docs.python.org/3/tutorial/datastructures.html?utm_source=chatgpt.com))
+
+## 1. Lists
+
+A **list** is an ordered, changeable collection.
+
+```python
+tasks = ["email client", "backup files", "update report"]
+print(tasks)
+```
+
+You can access items by position:
+
+```python
+print(tasks[0])
+print(tasks[1])
+```
+
+You can change them:
+
+```python
+tasks[1] = "backup database"
+print(tasks)
+```
+
+You can add items:
+
+```python
+tasks.append("review metrics")
+print(tasks)
+```
+
+### Real-world examples
+
+Web app:
+
+```python
+menu_items = ["Home", "Products", "Cart", "Profile"]
+print(menu_items)
+```
+
+Automation:
+
+```python
+files_to_process = ["report.csv", "users.csv", "sales.csv"]
+print(files_to_process)
+```
+
+Scientific computing:
+
+```python
+measurements = [21.5, 22.1, 21.8]
+print(measurements)
+```
+
+---
+
+## 2. Tuples
+
+A **tuple** is an ordered collection that is usually treated as fixed.
+
+```python
+coordinates = (39.0, -77.0)
+print(coordinates)
+```
+
+Access works like lists:
+
+```python
+print(coordinates[0])
+print(coordinates[1])
+```
+
+But tuples are not meant to be changed like lists.
+
+Think of a tuple as a small fixed record:
+
+```python
+user_profile = ("Anthony", 32, True)
+print(user_profile)
+```
+
+---
+
+## 3. Dictionaries
+
+A **dictionary** stores **key-value pairs**.
+
+```python
+user = {
+    "name": "Anthony",
+    "age": 32,
+    "wants_web_apps": True
+}
+
+print(user)
+```
+
+Access by key:
+
+```python
+print(user["name"])
+print(user["age"])
+```
+
+Update a value:
+
+```python
+user["age"] = 33
+print(user)
+```
+
+Add a new key:
+
+```python
+user["city"] = "Bowie"
+print(user)
+```
+
+### Real-world examples
+
+Web app:
+
+```python
+product = {
+    "name": "basketball",
+    "price": 3.23,
+    "quantity": 25
+}
+print(product)
+```
+
+Automation:
+
+```python
+task_status = {
+    "task_name": "Send weekly report",
+    "days_left": 2,
+    "is_urgent": False
+}
+print(task_status)
+```
+
+Scientific:
+
+```python
+experiment = {
+    "sample_id": "A12",
+    "temperature_c": 22.5,
+    "passed": True
+}
+print(experiment)
+```
+
+---
+
+## 4. Sets
+
+A **set** stores **unique values**.
+
+```python
+tags = {"python", "automation", "python", "web"}
+print(tags)
+```
+
+The duplicate `"python"` only appears once.
+
+Sets are useful when you care about:
+
+* uniqueness
+* fast membership checks
+
+```python
+completed_tasks = {"email client", "backup files"}
+
+print("email client" in completed_tasks)
+print("deploy app" in completed_tasks)
+```
+
+---
+
+## Compare the four
+
+### List
+
+* ordered
+* changeable
+* allows duplicates
+
+### Tuple
+
+* ordered
+* usually fixed
+* allows duplicates
+
+### Dictionary
+
+* key-value pairs
+* lookup by key
+
+### Set
+
+* unique values only
+* great for membership tests
+
+---
+
+## Compare to the rest of your track
+
+You’ll see these ideas again in the other languages:
+
+* **TypeScript**: arrays, tuples, objects, `Set`
+* **PostgreSQL**: rows, arrays, JSON, tables
+* **Rust**: vectors, tuples, hash maps, hash sets
+* **Go**: slices, structs, maps
+* **R**: vectors, lists, named lists
+* **Julia**: arrays, tuples, dictionaries, sets
+
+So again, the pattern stays the same:
+**how do we group values together in a useful way?**
+
+---
+
+## Indexing reminder
+
+Python uses **zero-based indexing**.
+
+```python
+colors = ["red", "blue", "green"]
+
+print(colors[0])  # red
+print(colors[1])  # blue
+print(colors[2])  # green
+```
+
+That means the first item is index `0`, not `1`.
+
+---
+
+## Five exercises
+
+### Exercise 1: list
+
+Create a list called `favorite_foods` with 3 food items.
+
+Then:
+
+* print the whole list
+* print the first item
+* print the last item
+
+### Exercise 2: tuple
+
+Create a tuple called `user_profile` containing:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Print the tuple.
+
+### Exercise 3: dictionary
+
+Create a dictionary called `book` with keys:
+
+* `"title"`
+* `"author"`
+* `"pages"`
+
+Print:
+
+* the whole dictionary
+* the title only
+
+### Exercise 4: set
+
+Create a set called `skills` with at least 4 items, including one duplicate.
+
+Print the set.
+
+### Exercise 5: combine structures
+
+Create a dictionary called `student` with:
+
+* `"name"`
+* `"languages"` where the value is a list of 3 languages
+* `"active"` with a boolean value
+
+Print the dictionary, then print just the list of languages.
+
+---
+
+## Go further
+
+### A. Add to a list
+
+```python
+tasks = ["email", "backup"]
+tasks.append("deploy")
+print(tasks)
+```
+
+### B. Check dictionary keys
+
+```python
+user = {"name": "Anthony", "age": 32}
+print(user["name"])
+```
+
+### C. Membership in a set
+
+```python
+skills = {"python", "sql", "python"}
+print("python" in skills)
+```
+
+### D. Length
+
+You can count items in many Python data structures with `len()`:
+
+```python
+numbers = [1, 2, 3]
+print(len(numbers))
+```
+
+---
+
+## What I’ll grade today
+
+When you submit, I’ll check:
+
+* correctness
+* readability
+* whether you chose the right structure for the job
+
+Submit your **Exercise 1–5** Python solutions for Week 2 Day 1.
