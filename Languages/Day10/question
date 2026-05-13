@@ -1,0 +1,402 @@
+Excellent — **Week 2 Day 3** is **PostgreSQL data structures and table-style organization**.
+
+PostgreSQL’s current docs say it has a rich set of built-in data types, including arrays and JSON/JSONB, while table expressions are the core way queries work over rows. PostgreSQL 18 is the current major version, and the PostgreSQL site lists **18.3** in the February 26, 2026 release announcement. ([PostgreSQL][1])
+
+## Week 2 Day 3
+
+**Language of the day:** SQL using PostgreSQL
+**Concept of the day:** Data structures in SQL form
+
+Today’s main PostgreSQL structures:
+
+* **tables and rows**
+* **arrays**
+* **JSON/JSONB**
+* **sets of rows returned by queries**
+
+This is where SQL starts to feel very different from Python and TypeScript. In Python you make a list or dictionary directly in code. In PostgreSQL, the most important structure is usually a **table**, and a query produces a **virtual table** as output. PostgreSQL’s docs describe table expressions exactly that way: the `FROM` clause, optionally followed by `WHERE`, `GROUP BY`, and `HAVING`, produces a virtual table that is then passed to the select list. ([PostgreSQL][2])
+
+---
+
+## 1. Tables and rows
+
+A PostgreSQL **table** stores many rows with named columns.
+
+### Example table
+
+```sql
+CREATE TABLE books (
+    title TEXT,
+    author TEXT,
+    pages INT
+);
+```
+
+Add rows:
+
+```sql
+INSERT INTO books (title, author, pages)
+VALUES
+    ('Learning SQL', 'Pat Doe', 300),
+    ('Science Notes', 'Maya Lee', 220);
+```
+
+Query the rows:
+
+```sql
+SELECT *
+FROM books;
+```
+
+That is the closest SQL equivalent to a collection of structured records.
+
+### Compare to Python and TypeScript
+
+Python dictionary:
+
+```python
+book = {"title": "Learning SQL", "author": "Pat Doe", "pages": 300}
+```
+
+TypeScript object:
+
+```ts
+const book = { title: "Learning SQL", author: "Pat Doe", pages: 300 };
+```
+
+PostgreSQL row:
+
+```sql
+SELECT title, author, pages
+FROM books;
+```
+
+A table is like “many objects/records of the same shape.”
+
+---
+
+## 2. Arrays
+
+PostgreSQL has native **array types** and documents dedicated array operators and functions. ([PostgreSQL][3])
+
+### Example array literal
+
+```sql
+SELECT ARRAY['python', 'sql', 'julia'] AS languages;
+```
+
+You can also write an array with braces:
+
+```sql
+SELECT '{python,sql,julia}'::text[] AS languages;
+```
+
+### Access elements
+
+PostgreSQL arrays are **1-based**, not 0-based.
+
+```sql
+SELECT
+    ARRAY['apple', 'papaya', 'dragonfruit'] AS favorite_foods,
+    ARRAY['apple', 'papaya', 'dragonfruit'][1] AS first_item,
+    ARRAY['apple', 'papaya', 'dragonfruit'][3] AS last_item;
+```
+
+That is a big difference:
+
+* Python/TypeScript arrays start at 0
+* PostgreSQL arrays start at 1
+
+### Real-world example
+
+```sql
+SELECT
+    'Anthony' AS name,
+    ARRAY['Python', 'TypeScript', 'Julia'] AS languages;
+```
+
+---
+
+## 3. JSON and JSONB
+
+PostgreSQL supports both `json` and `jsonb`, and the docs explain that `jsonb` is generally more efficient to process because it is stored in decomposed binary form, while `json` stores an exact copy of the input text. ([PostgreSQL][4])
+
+### Example JSON object
+
+```sql
+SELECT
+    '{"name": "Anthony", "age": 32, "active": true}'::jsonb AS student;
+```
+
+### Build JSON from SQL values
+
+PostgreSQL also supports creating JSON objects and arrays from relational data. ([PostgreSQL][5])
+
+```sql
+SELECT jsonb_build_object(
+    'name', 'Anthony',
+    'age', 32,
+    'active', true
+) AS student;
+```
+
+### Access JSON fields
+
+```sql
+SELECT
+    ('{"name": "Anthony", "age": 32}'::jsonb)->>'name' AS student_name;
+```
+
+Here:
+
+* `->` gets a JSON value
+* `->>` gets text
+
+### Compare to Python dictionary
+
+Python:
+
+```python
+student = {"name": "Anthony", "age": 32, "active": True}
+```
+
+PostgreSQL:
+
+```sql
+SELECT jsonb_build_object(
+    'name', 'Anthony',
+    'age', 32,
+    'active', true
+);
+```
+
+This is the closest SQL equivalent to a nested object structure.
+
+---
+
+## 4. Sets of rows
+
+In SQL, **result sets** are one of the most important “data structures.” A `SELECT` returns zero or more rows.
+
+### Example
+
+```sql
+SELECT title, author
+FROM books;
+```
+
+That result is not a Python list in memory, but conceptually it is a collection of rows.
+
+### Filtering the set
+
+```sql
+SELECT title, pages
+FROM books
+WHERE pages > 250;
+```
+
+This is one of SQL’s most important ideas:
+you operate on the whole set of rows at once.
+
+### Compare to looping
+
+Python:
+
+```python
+for book in books:
+    if book["pages"] > 250:
+        print(book["title"])
+```
+
+PostgreSQL:
+
+```sql
+SELECT title
+FROM books
+WHERE pages > 250;
+```
+
+Different syntax, same goal.
+
+---
+
+## 5. Query-built structures
+
+Because SQL is expression-heavy, you can build structured output directly in queries.
+
+### Array output
+
+```sql
+SELECT ARRAY['English', 'French', 'German'] AS languages;
+```
+
+### JSON output
+
+```sql
+SELECT jsonb_build_object(
+    'name', 'mike',
+    'languages', jsonb_build_array('English', 'French', 'German'),
+    'active', true
+) AS student;
+```
+
+### CTE as a temporary named structure
+
+```sql
+WITH student_info AS (
+    SELECT
+        'mike' AS name,
+        ARRAY['English', 'French', 'German'] AS languages,
+        true AS active
+)
+SELECT *
+FROM student_info;
+```
+
+This is similar to creating a temporary named result with a known shape for one query.
+
+---
+
+## Compare the four
+
+### Table / row
+
+* the core SQL structure
+* stores many records with fixed columns
+
+### Array
+
+* ordered list inside a value
+* PostgreSQL arrays are 1-based
+
+### JSON / JSONB
+
+* flexible nested object/array structure
+* useful for document-like data
+
+### Result set
+
+* output of a query
+* often the main thing you work with in SQL
+
+---
+
+## Compare to your earlier languages
+
+### Python
+
+* list
+* tuple
+* dictionary
+* set
+
+### TypeScript
+
+* array
+* tuple
+* object
+* `Set`
+
+### PostgreSQL
+
+* table/row
+* array
+* JSON/JSONB
+* result set
+
+The closest equivalents are not exact, but the idea is still:
+**how do we group related values and work with collections?**
+
+---
+
+## Five exercises
+
+### Exercise 1: array
+
+Write a query that returns:
+
+* an array called `favorite_foods` with 3 food items
+* the first item
+* the last item
+
+Use PostgreSQL array indexing correctly.
+
+### Exercise 2: row-style structure
+
+Write a query that returns one row with:
+
+* your name as `name`
+* your age as `age`
+* `true` or `false` as `wants_web_apps`
+
+### Exercise 3: JSONB object
+
+Write a query that returns a JSONB object called `book` with:
+
+* `title`
+* `author`
+* `pages`
+
+Use `jsonb_build_object`.
+
+### Exercise 4: set of rows
+
+Assume a table named `books` with columns:
+
+* `title`
+* `author`
+* `pages`
+
+Write a query that returns:
+
+* `title`
+* `pages`
+
+for every row in the table.
+
+### Exercise 5: combined structure
+
+Write a query that returns a JSONB object called `student` with:
+
+* `name`
+* `languages` as a JSON array of 3 languages
+* `active` as a boolean
+
+Use `jsonb_build_object` and `jsonb_build_array`.
+
+---
+
+## Go further
+
+### A. Check array functions
+
+PostgreSQL has specialized array operators and functions for arrays. ([PostgreSQL][3])
+
+```sql
+SELECT array_length(ARRAY['a', 'b', 'c'], 1) AS item_count;
+```
+
+### B. Build JSON arrays from relational data
+
+PostgreSQL documents generating JSON objects and arrays from relational data as part of its SQL/JSON support. ([PostgreSQL][5])
+
+```sql
+SELECT jsonb_build_array('Python', 'SQL', 'Julia') AS languages;
+```
+
+### C. Table expressions as virtual tables
+
+PostgreSQL describes table expressions as producing a virtual table passed through the query pipeline. ([PostgreSQL][2])
+
+```sql
+SELECT title
+FROM books
+WHERE pages > 250;
+```
+
+
+[1]: https://www.postgresql.org/docs/current/datatype.html?utm_source=chatgpt.com "Documentation: 18: Chapter 8. Data Types"
+[2]: https://www.postgresql.org/docs/current/queries-table-expressions.html?utm_source=chatgpt.com "PostgreSQL: Documentation: 18: 7.2. Table Expressions"
+[3]: https://www.postgresql.org/docs/current/functions-array.html?utm_source=chatgpt.com "Documentation: 18: 9.19. Array Functions and Operators"
+[4]: https://www.postgresql.org/docs/current/datatype-json.html?utm_source=chatgpt.com "Documentation: 18: 8.14. JSON Types"
+[5]: https://www.postgresql.org/docs/current/functions-json.html?utm_source=chatgpt.com "Documentation: 18: 9.16. JSON Functions and Operators"
