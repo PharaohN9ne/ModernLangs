@@ -23,6 +23,7 @@ console.log(book.title);
 
 // question 4
 
+// @ts-ignore
 const skills = new Set(["boxing", "Muay Thai", "karate", "Muay Thai"]);
 console.log(skills);
 console.log(skills.has("boxing"));
