@@ -1,0 +1,368 @@
+Excellent — **Week 2 Day 2** is **TypeScript data structures**.
+
+TypeScript’s official docs describe it as JavaScript with syntax for types, and the current docs/handbook are the right place to learn the language’s core types and object model. ([TypeScript][1])
+
+## Week 2 Day 2
+
+**Language of the day:** TypeScript
+**Concept of the day:** Core data structures
+
+Today’s main TypeScript structures:
+
+* **arrays**
+* **tuples**
+* **objects**
+* **sets**
+
+The most relevant handbook sections here are **Everyday Types** and **Object Types**, since arrays and tuples are everyday value types, while objects are the main grouping structure in JavaScript/TypeScript. ([TypeScript][2])
+
+---
+
+## 1. Arrays
+
+An **array** is an ordered collection of values.
+
+```ts
+const tasks: string[] = ["email client", "backup files", "update report"];
+console.log(tasks);
+```
+
+You can access items by index:
+
+```ts
+console.log(tasks[0]);
+console.log(tasks[1]);
+```
+
+You can update them:
+
+```ts
+tasks[1] = "backup database";
+console.log(tasks);
+```
+
+You can add items:
+
+```ts
+tasks.push("review metrics");
+console.log(tasks);
+```
+
+### Real-world examples
+
+Web app:
+
+```ts
+const menuItems: string[] = ["Home", "Products", "Cart", "Profile"];
+console.log(menuItems);
+```
+
+Automation:
+
+```ts
+const filesToProcess: string[] = ["report.csv", "users.csv", "sales.csv"];
+console.log(filesToProcess);
+```
+
+Scientific computing:
+
+```ts
+const measurements: number[] = [21.5, 22.1, 21.8];
+console.log(measurements);
+```
+
+---
+
+## 2. Tuples
+
+A **tuple** is like a fixed-position array where each position has a known meaning and type. TypeScript has supported tuple types for a long time, and the release notes emphasize that tuples are useful for modeling structured positional data. ([TypeScript][3])
+
+```ts
+const coordinates: [number, number] = [39.0, -77.0];
+console.log(coordinates);
+```
+
+Access works by index:
+
+```ts
+console.log(coordinates[0]);
+console.log(coordinates[1]);
+```
+
+A tuple can represent a compact record:
+
+```ts
+const userProfile: [string, number, boolean] = ["Anthony", 32, true];
+console.log(userProfile);
+```
+
+### Compare to arrays
+
+Array:
+
+```ts
+const names: string[] = ["Ava", "Maya", "Jordan"];
+```
+
+Tuple:
+
+```ts
+const profile: [string, number, boolean] = ["Anthony", 32, true];
+```
+
+Arrays usually mean “many values of the same kind.”
+Tuples usually mean “a small fixed structure.”
+
+---
+
+## 3. Objects
+
+In TypeScript, objects are the fundamental way to group related values, and the handbook’s **Object Types** page says exactly that. ([TypeScript][4])
+
+```ts
+const user = {
+  name: "Anthony",
+  age: 32,
+  wantsWebApps: true,
+};
+
+console.log(user);
+```
+
+Access by property:
+
+```ts
+console.log(user.name);
+console.log(user.age);
+```
+
+Update a property:
+
+```ts
+user.age = 33;
+console.log(user);
+```
+
+Add another property if your type allows it. With a plain inferred object literal, TypeScript expects the original shape to stay consistent, so for beginners it is often easiest to define the full object up front:
+
+```ts
+const product = {
+  name: "basketball",
+  price: 3.23,
+  quantity: 25,
+};
+
+console.log(product);
+```
+
+### Typed object example
+
+```ts
+const book: { title: string; author: string; pages: number } = {
+  title: "Learning TypeScript",
+  author: "Example Author",
+  pages: 250,
+};
+
+console.log(book.title);
+```
+
+---
+
+## 4. Sets
+
+A **Set** stores unique values. JavaScript’s standard library provides `Set`, and TypeScript types it naturally.
+
+```ts
+const skills = new Set(["boxing", "Muay Thai", "karate", "Muay Thai"]);
+console.log(skills);
+```
+
+Even though `"Muay Thai"` appears twice in the input, the set only keeps one copy.
+
+Membership checks:
+
+```ts
+console.log(skills.has("boxing"));
+console.log(skills.has("MMA"));
+```
+
+Sets are useful when you care about:
+
+* uniqueness
+* fast membership checks
+
+---
+
+## Compare the four
+
+### Array
+
+* ordered
+* changeable
+* usually many values of the same type
+
+### Tuple
+
+* ordered
+* fixed-position meaning
+* often mixed types
+
+### Object
+
+* named properties
+* best for describing one structured thing
+
+### Set
+
+* unique values only
+* best for membership and deduplication
+
+---
+
+## Compare to Python
+
+Python:
+
+* list
+* tuple
+* dictionary
+* set
+
+TypeScript:
+
+* array
+* tuple
+* object
+* `Set`
+
+So the ideas are very similar, but the syntax changes.
+
+### Python list
+
+```python
+favorite_foods = ["apple", "papaya", "dragonfruit"]
+```
+
+### TypeScript array
+
+```ts
+const favoriteFoods: string[] = ["apple", "papaya", "dragonfruit"];
+```
+
+### Python dictionary
+
+```python
+book = {"title": "Example", "pages": 100}
+```
+
+### TypeScript object
+
+```ts
+const book = { title: "Example", pages: 100 };
+```
+
+---
+
+## Indexing reminder
+
+TypeScript arrays and tuples use **zero-based indexing**, just like JavaScript.
+
+```ts
+const colors: string[] = ["red", "blue", "green"];
+
+console.log(colors[0]); // red
+console.log(colors[1]); // blue
+console.log(colors[2]); // green
+```
+
+---
+
+## Five exercises
+
+### Exercise 1: array
+
+Create an array called `favoriteFoods` with 3 food items.
+
+Then:
+
+* print the whole array
+* print the first item
+* print the last item
+
+### Exercise 2: tuple
+
+Create a tuple called `userProfile` containing:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Print the tuple.
+
+### Exercise 3: object
+
+Create an object called `book` with properties:
+
+* `title`
+* `author`
+* `pages`
+
+Print:
+
+* the whole object
+* the title only
+
+### Exercise 4: set
+
+Create a `Set` called `skills` with at least 4 items, including one duplicate.
+
+Print the set, then check whether one value is in the set using `.has()`.
+
+### Exercise 5: combine structures
+
+Create an object called `student` with:
+
+* `name`
+* `languages` where the value is an array of 3 languages
+* `active` with a boolean value
+
+Print the object, then print just the languages array.
+
+---
+
+## Go further
+
+### A. Array length
+
+```ts
+const foods = ["apple", "papaya", "dragonfruit"];
+console.log(foods.length);
+```
+
+### B. Add to an array
+
+```ts
+const tasks = ["email", "backup"];
+tasks.push("deploy");
+console.log(tasks);
+```
+
+### C. Object property access
+
+```ts
+const user = { name: "Anthony", age: 32 };
+console.log(user.name);
+```
+
+### D. Set membership
+
+```ts
+const skills = new Set(["python", "sql", "python"]);
+console.log(skills.has("python"));
+```
+
+[1]: https://www.typescriptlang.org/?utm_source=chatgpt.com "TypeScript: JavaScript With Syntax For Types."
+[2]: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html?utm_source=chatgpt.com "TypeScript: Documentation - Everyday Types"
+[3]: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-0.html?utm_source=chatgpt.com "Documentation - TypeScript 4.0"
+[4]: https://www.typescriptlang.org/docs/handbook/2/objects.html?utm_source=chatgpt.com "Documentation - Object Types"
