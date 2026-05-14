@@ -1,0 +1,407 @@
+Excellent — **Week 2 Day 4** is **Rust data structures**.
+
+Rust’s standard collections docs group collections into sequences, maps, and sets, while the Rust Book introduces tuples, arrays, vectors, and structs as core ways to group data. The latest official release page currently lists **Rust 1.95.0** from **April 16, 2026**. ([Rust Documentation][1])
+
+## Week 2 Day 4
+
+**Language of the day:** Rust
+**Concept of the day:** Core data structures
+
+Today’s main Rust structures:
+
+* **vectors (`Vec`)**
+* **tuples**
+* **structs**
+* **hash sets / hash maps**
+
+This is where Rust gets interesting: some data structures are built into the language, and others come from the standard library collections module. ([Rust Documentation][2])
+
+---
+
+## 1. Vectors
+
+A **vector** (`Vec<T>`) is Rust’s growable list type. Rust’s collections docs list `Vec` under sequences. ([Rust Documentation][1])
+
+```rust
+fn main() {
+    let favorite_foods = vec!["apple", "papaya", "dragonfruit"];
+    println!("{:?}", favorite_foods);
+}
+```
+
+Access by index:
+
+```rust
+fn main() {
+    let favorite_foods = vec!["apple", "papaya", "dragonfruit"];
+    println!("{}", favorite_foods[0]);
+    println!("{}", favorite_foods[2]);
+}
+```
+
+Add an item:
+
+```rust
+fn main() {
+    let mut favorite_foods = vec!["apple", "papaya", "dragonfruit"];
+    favorite_foods.push("grapes");
+    println!("{:?}", favorite_foods);
+}
+```
+
+### Real-world examples
+
+Web app:
+
+```rust
+fn main() {
+    let menu_items = vec!["Home", "Products", "Cart", "Profile"];
+    println!("{:?}", menu_items);
+}
+```
+
+Automation:
+
+```rust
+fn main() {
+    let files_to_process = vec!["report.csv", "users.csv", "sales.csv"];
+    println!("{:?}", files_to_process);
+}
+```
+
+Scientific computing:
+
+```rust
+fn main() {
+    let measurements = vec![21.5, 22.1, 21.8];
+    println!("{:?}", measurements);
+}
+```
+
+---
+
+## 2. Tuples
+
+Rust’s Book says tuples are a general way of grouping together values of a variety of types into one compound type, and that tuples have a fixed length. ([Rust Documentation][2])
+
+```rust
+fn main() {
+    let user_profile = ("Anthony", 32, true);
+    println!("{:?}", user_profile);
+}
+```
+
+Access tuple positions:
+
+```rust
+fn main() {
+    let user_profile = ("Anthony", 32, true);
+    println!("{}", user_profile.0);
+    println!("{}", user_profile.1);
+}
+```
+
+Tuple positions are accessed with `.0`, `.1`, `.2`, not square brackets.
+
+### Compare to vectors
+
+Vector:
+
+```rust
+let foods = vec!["apple", "papaya", "dragonfruit"];
+```
+
+Tuple:
+
+```rust
+let profile = ("Anthony", 32, true);
+```
+
+Vectors usually mean “many values of the same general kind.”
+Tuples usually mean “a small fixed structure.”
+
+---
+
+## 3. Structs
+
+The Rust Book says structs are for grouping related values and naming each piece of data so the meaning is clear. ([Rust Documentation][3])
+
+```rust
+struct Book {
+    title: String,
+    author: String,
+    pages: u32,
+}
+
+fn main() {
+    let book = Book {
+        title: String::from("Apple"),
+        author: String::from("Steve Jobs"),
+        pages: 549,
+    };
+
+    println!("{}", book.title);
+    println!("{}", book.pages);
+}
+```
+
+Structs are the Rust equivalent of a named record or object.
+
+### Real-world example: student
+
+```rust
+struct Student {
+    name: String,
+    languages: Vec<String>,
+    active: bool,
+}
+
+fn main() {
+    let student = Student {
+        name: String::from("Mike"),
+        languages: vec![
+            String::from("English"),
+            String::from("French"),
+            String::from("German"),
+        ],
+        active: true,
+    };
+
+    println!("{}", student.name);
+    println!("{:?}", student.languages);
+}
+```
+
+---
+
+## 4. Hash sets and hash maps
+
+Rust’s `std::collections` docs group `HashMap` under maps and `HashSet` under sets. `HashSet` stores unique values, and `HashMap` stores key-value pairs. ([Rust Documentation][1])
+
+### HashSet
+
+```rust
+use std::collections::HashSet;
+
+fn main() {
+    let skills = HashSet::from([
+        "boxing",
+        "Muay Thai",
+        "karate",
+        "Muay Thai",
+    ]);
+
+    println!("{:?}", skills);
+    println!("{}", skills.contains("boxing"));
+}
+```
+
+Even though `"Muay Thai"` appears twice, the set only keeps one copy.
+
+### HashMap
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+    let mut book = HashMap::new();
+    book.insert("title", "Apple");
+    book.insert("author", "Steve Jobs");
+
+    println!("{:?}", book);
+    println!("{}", book["title"]);
+}
+```
+
+For Week 2, the most important thing is:
+
+* `HashSet` for uniqueness
+* `HashMap` for key-value lookup
+
+---
+
+## Compare the four
+
+### Vector
+
+* ordered
+* growable
+* usually same-type values
+
+### Tuple
+
+* ordered
+* fixed length
+* can mix types
+
+### Struct
+
+* named fields
+* best for one clearly structured record
+
+### HashSet / HashMap
+
+* `HashSet` for unique values
+* `HashMap` for key-value storage
+
+---
+
+## Compare to earlier languages
+
+### Python
+
+* list
+* tuple
+* dictionary
+* set
+
+### TypeScript
+
+* array
+* tuple
+* object
+* `Set`
+
+### PostgreSQL
+
+* arrays
+* row-like outputs
+* JSON objects
+* result sets
+
+### Rust
+
+* `Vec`
+* tuple
+* struct
+* `HashSet` / `HashMap`
+
+So the same core question stays the same:
+**how do we organize values in a way that matches the problem?**
+
+---
+
+## Indexing reminder
+
+Rust vectors use **zero-based indexing**.
+
+```rust
+fn main() {
+    let colors = vec!["red", "blue", "green"];
+    println!("{}", colors[0]);
+    println!("{}", colors[1]);
+    println!("{}", colors[2]);
+}
+```
+
+But tuples use `.0`, `.1`, `.2`.
+
+---
+
+## Five exercises
+
+### Exercise 1: vector
+
+Create a vector called `favorite_foods` with 3 food items.
+
+Then:
+
+* print the whole vector with `{:?}`
+* print the first item
+* print the last item
+
+### Exercise 2: tuple
+
+Create a tuple called `user_profile` containing:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Print the tuple with `{:?}`.
+
+### Exercise 3: struct
+
+Create a struct called `Book` with fields:
+
+* `title`
+* `author`
+* `pages`
+
+Then create one `book` value and print:
+
+* the whole book with `{:?}`
+* the title only
+
+For this exercise, add `#[derive(Debug)]` above the struct so you can print the whole struct.
+
+### Exercise 4: HashSet
+
+Create a `HashSet` called `skills` with at least 4 items, including one duplicate.
+
+Print the set with `{:?}`, then check whether one value is in the set using `.contains()`.
+
+### Exercise 5: combine structures
+
+Create a struct called `Student` with fields:
+
+* `name`
+* `languages` where the value is a vector of 3 languages
+* `active` with a boolean value
+
+Create one student value, print the whole struct with `{:?}`, then print just the `languages` field.
+
+---
+
+## Go further
+
+### A. Push into a vector
+
+```rust
+fn main() {
+    let mut tasks = vec!["email", "backup"];
+    tasks.push("deploy");
+    println!("{:?}", tasks);
+}
+```
+
+### B. Destructure a tuple
+
+Rust patterns can destructure tuples, and the Rust Book’s patterns section covers this broader pattern syntax. ([Rust Documentation][4])
+
+```rust
+fn main() {
+    let user_profile = ("Anthony", 32, true);
+    let (name, age, active) = user_profile;
+
+    println!("{}", name);
+    println!("{}", age);
+    println!("{}", active);
+}
+```
+
+### C. HashSet membership
+
+```rust
+use std::collections::HashSet;
+
+fn main() {
+    let skills = HashSet::from(["python", "sql", "python"]);
+    println!("{}", skills.contains("python"));
+}
+```
+
+## What I’ll grade today
+
+When you submit, I’ll check:
+
+* correctness
+* readability
+* whether you picked the right Rust structure
+
+Submit your **Exercise 1–5** Rust solutions.
+
+[1]: https://doc.rust-lang.org/std/collections/index.html?utm_source=chatgpt.com "std::collections - Rust"
+[2]: https://doc.rust-lang.org/book/ch03-02-data-types.html?utm_source=chatgpt.com "Data Types - The Rust Programming Language"
+[3]: https://doc.rust-lang.org/book/ch05-01-defining-structs.html?utm_source=chatgpt.com "Defining and Instantiating Structs - The Rust Programming ..."
+[4]: https://doc.rust-lang.org/book/ch19-00-patterns.html?utm_source=chatgpt.com "Patterns and Matching - The Rust Programming Language"
