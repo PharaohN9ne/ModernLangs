@@ -9,6 +9,8 @@ import (
 func main() {
 	favoriteFoods := []string{"chicken", "goat", "beef"}
 	fmt.Println(favoriteFoods)
+	fmt.Println(favoriteFoods[0])
+	fmt.Println(favoriteFoods[len(favoriteFoods)-1])
 }
 
 //question 2
