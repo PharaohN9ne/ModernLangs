@@ -1,0 +1,319 @@
+Excellent — **Week 3** starts with **Python file handling and basic I/O**.
+
+Python’s current stable release is **3.14.5**, and the official tutorial’s Input and Output chapter covers the exact foundations we need here: reading input, printing output, opening files, reading files, and writing files. The `io` docs also explain that Python’s I/O system centers on text I/O and binary I/O. ([python.org][1])
+
+## Week 3 overview
+
+This week will build in this order:
+
+* file handling and basic I/O
+* JSON parsing and writing
+* XML parsing
+* simple web scraping
+* a minimal web server
+
+Today is the foundation day, because nearly everything else this week depends on being comfortable with reading and writing data. The official Python tutorial treats files and input/output as a core beginner topic for exactly that reason. ([Python documentation][2])
+
+## Week 3 Day 1
+
+**Language of the day:** Python
+**Concept of the day:** File handling and basic I/O
+
+---
+
+## 1. Basic output
+
+You already used `print()`, but now we use it more intentionally for programs that interact with users and files. `print()` is one of Python’s built-in functions. ([Python documentation][3])
+
+```python
+name = "Anthony"
+age = 32
+
+print(name)
+print(age)
+print(f"My name is {name} and I am {age}.")
+```
+
+### Why this matters
+
+You will use output to:
+
+* show results to the user
+* confirm what a file contains
+* debug your code while learning
+
+---
+
+## 2. Basic input
+
+Python gets keyboard input with `input()`. The tutorial’s I/O chapter covers this flow as part of normal beginner interaction. ([Python documentation][2])
+
+```python
+name = input("What is your name? ")
+print(f"Hello, {name}!")
+```
+
+Important detail:
+`input()` returns a **string**.
+
+So if you want a number:
+
+```python
+age_text = input("How old are you? ")
+age = int(age_text)
+
+print(age + 1)
+```
+
+If you skip `int(...)`, Python treats it like text instead of a number.
+
+---
+
+## 3. Opening files
+
+The standard way to open a file is with `open()`, and the tutorial recommends using it with `with` so the file is properly closed afterward. ([Python documentation][2])
+
+### Read a text file
+
+```python
+with open("notes.txt", "r") as file:
+    content = file.read()
+
+print(content)
+```
+
+What this means:
+
+* `"notes.txt"` is the file name
+* `"r"` means read mode
+* `file.read()` reads the whole file as text
+
+### Why `with` matters
+
+Using `with` automatically handles cleanup when you are done with the file. That is the standard beginner-safe pattern shown in Python docs and tutorials. ([Python documentation][2])
+
+---
+
+## 4. Writing files
+
+To write text to a file:
+
+```python
+with open("notes.txt", "w") as file:
+    file.write("Hello from Python!\n")
+    file.write("This is my second line.\n")
+```
+
+Important:
+
+* `"w"` means write mode
+* write mode **replaces** the old file contents if the file already exists
+
+### Append instead of replace
+
+```python
+with open("notes.txt", "a") as file:
+    file.write("Adding one more line.\n")
+```
+
+* `"a"` means append mode
+* append adds to the end instead of overwriting
+
+The tutorial’s file section explains these core modes and file operations. ([Python documentation][2])
+
+---
+
+## 5. Reading line by line
+
+Sometimes you do not want the whole file at once.
+
+```python
+with open("notes.txt", "r") as file:
+    for line in file:
+        print(line)
+```
+
+That loops through the file one line at a time.
+
+A cleaner version removes the extra newline that `print()` adds:
+
+```python
+with open("notes.txt", "r") as file:
+    for line in file:
+        print(line.strip())
+```
+
+This pattern is important for:
+
+* logs
+* CSV-like text
+* config files
+* scraping output saved to disk
+
+---
+
+## 6. Useful file modes
+
+The `io` and tutorial docs distinguish text and binary handling, and the common beginner text modes are: ([Python documentation][2])
+
+* `"r"` = read text
+* `"w"` = write text, replacing old content
+* `"a"` = append text
+* `"rb"` = read binary
+* `"wb"` = write binary
+
+For now, we stay with text files.
+
+---
+
+## 7. Real-world examples
+
+### Web app-style example: save a config file
+
+```python
+site_name = "My First App"
+theme = "dark"
+
+with open("config.txt", "w") as file:
+    file.write(f"site_name={site_name}\n")
+    file.write(f"theme={theme}\n")
+```
+
+Then read it back:
+
+```python
+with open("config.txt", "r") as file:
+    print(file.read())
+```
+
+### Automation example: save task list
+
+```python
+tasks = ["email client", "backup files", "update report"]
+
+with open("tasks.txt", "w") as file:
+    for task in tasks:
+        file.write(task + "\n")
+```
+
+### Scientific example: save measurements
+
+```python
+measurements = [21.5, 22.1, 21.8]
+
+with open("measurements.txt", "w") as file:
+    for value in measurements:
+        file.write(str(value) + "\n")
+```
+
+---
+
+## 8. Files and modules
+
+Python’s tutorial reminds us that a module is just a `.py` file, which is another useful file-handling concept: code itself lives in files. ([Python documentation][4])
+
+That means this week’s file work connects directly to:
+
+* creating Python programs
+* saving helper code
+* reading and writing data files
+
+---
+
+## 9. Looking ahead to JSON
+
+The tutorial and `json` docs explain that Python’s standard `json` module serializes Python data structures to strings and reconstructs them later. That is exactly where we are headed next. ([Python documentation][2])
+
+For example, later this week you will move from:
+
+```python
+with open("notes.txt", "w") as file:
+    file.write("name=Anthony")
+```
+
+to structured data like:
+
+```python
+import json
+
+student = {"name": "Anthony", "age": 32}
+
+with open("student.json", "w") as file:
+    json.dump(student, file)
+```
+
+---
+
+## Five exercises
+
+### Exercise 1: simple output
+
+Create variables:
+
+* `name`
+* `favorite_language`
+
+Print a sentence using both variables.
+
+### Exercise 2: input
+
+Ask the user for their name with `input()` and print a greeting.
+
+### Exercise 3: write a file
+
+Write a file called `my_notes.txt` containing at least 3 lines of text.
+
+### Exercise 4: read a file
+
+Open `my_notes.txt`, read the whole file, and print its contents.
+
+### Exercise 5: write and read a list
+
+Create a list of 3 tasks.
+Write them to a file called `tasks.txt`, one task per line.
+Then reopen `tasks.txt` and print each line.
+
+---
+
+## Go further
+
+### A. Convert input to a number
+
+```python
+age = int(input("Enter your age: "))
+print(age + 1)
+```
+
+### B. Read line by line
+
+```python
+with open("tasks.txt", "r") as file:
+    for line in file:
+        print(line.strip())
+```
+
+### C. Validate JSON from the command line
+
+Python’s `json` module can be run with `python -m json` to validate and pretty-print JSON. That will matter later this week when you begin JSON files. ([Python documentation][5])
+
+### D. Binary vs text
+
+The `io` docs explain that Python separates text I/O from binary I/O. For this week’s first lesson, stick to text files. ([Python documentation][6])
+
+## What I’ll grade today
+
+When you submit, I’ll check:
+
+* correctness
+* readability
+* whether you used the right file mode
+* whether your file logic matches the task
+
+Submit your **Exercise 1–5** Python solutions for Week 3 Day 1.
+
+[1]: https://www.python.org/downloads/?utm_source=chatgpt.com "Download Python"
+[2]: https://docs.python.org/3/tutorial/inputoutput.html?utm_source=chatgpt.com "7. Input and Output — Python 3.14.5 documentation"
+[3]: https://docs.python.org/3/library/functions.html?utm_source=chatgpt.com "Built-in Functions"
+[4]: https://docs.python.org/3/tutorial/modules.html?utm_source=chatgpt.com "6. Modules — Python 3.14.5 documentation"
+[5]: https://docs.python.org/3/library/json.html?utm_source=chatgpt.com "JSON encoder and decoder — Python 3.14.5 documentation"
+[6]: https://docs.python.org/3/library/io.html?utm_source=chatgpt.com "io — Core tools for working with streams"
