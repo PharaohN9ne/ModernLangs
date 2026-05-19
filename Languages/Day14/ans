@@ -1,0 +1,39 @@
+#question 1
+
+favorite_foods = ["apple", "papaya", "dragonfruit"]
+println(favorite_foods)
+println(favorite_foods[1])
+println(favorite_foods[3])
+
+#question 2
+
+user_profile = ("Greg", 86, true)
+println(user_profile)
+
+#queston 3
+
+book = Dict(
+    "title" => "Apple",
+    "author" => "Steve Jobs",
+    "pages" => 777
+)
+
+println(book)
+println(book["title"])
+
+#question 4
+
+skills = Set(["Boxing", "Muay Thai", "Karate", "Muay Thai", "MMA"])
+println(skills)
+println("Boxing" in skills)
+
+#question 5
+
+student = Dict(
+    "name" => "George",
+    "Languages" => ["English", "French", "Spanish"],
+    "active" => true
+)
+
+println(student)
+println(student["Languages"])

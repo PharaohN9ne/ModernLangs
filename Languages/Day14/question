@@ -1,0 +1,366 @@
+Excellent — **Week 2 Day 7** is **Julia data structures**.
+
+Julia’s official collections docs cover core collection types like arrays, dictionaries, and sets, and the official site currently shows **Julia 1.12.6** as the install version. ([docs.julialang.org][1])
+
+## Week 2 Day 7
+
+**Language of the day:** Julia
+**Concept of the day:** Core data structures
+
+Today’s main Julia structures:
+
+* **arrays**
+* **tuples**
+* **dictionaries**
+* **sets**
+
+This is a nice fit for Julia because these are all first-class parts of the language and its Base collections system. ([docs.julialang.org][1])
+
+---
+
+## 1. Arrays
+
+In Julia, a one-dimensional array is a **Vector**, which the official docs describe as an alias for `Array{T,1}`. ([docs.julialang.org][2])
+
+```julia
+favorite_foods = ["apple", "papaya", "dragonfruit"]
+println(favorite_foods)
+```
+
+Access by index:
+
+```julia
+println(favorite_foods[1])
+println(favorite_foods[3])
+```
+
+Important difference:
+
+* Python, TypeScript, Rust, and Go use **0-based indexing**
+* Julia uses **1-based indexing** for arrays, like R does. This follows Julia’s standard array behavior shown throughout the official array docs. ([docs.julialang.org][2])
+
+Add an item:
+
+```julia
+push!(favorite_foods, "grapes")
+println(favorite_foods)
+```
+
+### Real-world examples
+
+Web app:
+
+```julia
+menu_items = ["Home", "Products", "Cart", "Profile"]
+```
+
+Automation:
+
+```julia
+files_to_process = ["report.csv", "users.csv", "sales.csv"]
+```
+
+Scientific computing:
+
+```julia
+measurements = [21.5, 22.1, 21.8]
+```
+
+Julia arrays are especially important in scientific computing, and the docs note that vectors and matrices are fundamental array forms. ([docs.julialang.org][2])
+
+---
+
+## 2. Tuples
+
+Julia functions conceptually map a tuple of argument values to a return value, and tuples are a natural fixed grouping of values in Julia. ([docs.julialang.org][3])
+
+```julia
+user_profile = ("Anthony", 32, true)
+println(user_profile)
+```
+
+Access tuple positions:
+
+```julia
+println(user_profile[1])
+println(user_profile[2])
+```
+
+Tuples are good for:
+
+* small fixed records
+* returning several values together
+* grouping values of different types
+
+### Compare to arrays
+
+Array:
+
+```julia
+foods = ["apple", "papaya", "dragonfruit"]
+```
+
+Tuple:
+
+```julia
+profile = ("Anthony", 32, true)
+```
+
+Arrays are typically for flexible collections.
+Tuples are typically for small fixed structures.
+
+---
+
+## 3. Dictionaries
+
+A **Dict** is Julia’s built-in dictionary type, and the official collections docs show `Dict` as a key-value collection with `keys`, `values`, and `pairs` support. ([docs.julialang.org][1])
+
+```julia
+book = Dict(
+    "title" => "Apple",
+    "author" => "Steve Jobs",
+    "pages" => 549
+)
+
+println(book)
+println(book["title"])
+```
+
+This is Julia’s closest equivalent to:
+
+* a Python dictionary
+* a TypeScript object used as a key-value store
+* a Go map
+* a Rust `HashMap`
+
+### Real-world example
+
+```julia
+student = Dict(
+    "name" => "Mike",
+    "active" => true
+)
+```
+
+A detail from the official docs:
+for `Dict`, the iteration order of values may vary because values are stored internally in a hash table, though `keys`, `values`, and `pairs` stay aligned with each other. ([docs.julialang.org][1])
+
+---
+
+## 4. Sets
+
+Julia has a built-in **Set** collection type as part of Base collections. The collections documentation covers set-like collection behavior alongside dictionaries and other collection utilities. ([docs.julialang.org][1])
+
+```julia
+skills = Set(["boxing", "Muay Thai", "karate", "Muay Thai"])
+println(skills)
+```
+
+Even though `"Muay Thai"` appears twice, the set keeps only one copy.
+
+Membership check:
+
+```julia
+println("boxing" in skills)
+println("MMA" in skills)
+```
+
+Sets are useful when you care about:
+
+* uniqueness
+* membership checks
+* removing duplicates
+
+---
+
+## Compare the four
+
+### Array
+
+* ordered
+* flexible size
+* very important in Julia
+
+### Tuple
+
+* ordered
+* fixed-size grouping
+* great for small mixed records
+
+### Dictionary
+
+* key-value storage
+* lookup by key
+
+### Set
+
+* unique values only
+* good for membership tests
+
+---
+
+## Compare to your earlier languages
+
+### Python
+
+* list
+* tuple
+* dictionary
+* set
+
+### TypeScript
+
+* array
+* tuple
+* object
+* `Set`
+
+### PostgreSQL
+
+* arrays
+* JSON-style objects
+* result sets
+
+### Rust
+
+* `Vec`
+* tuple
+* struct
+* `HashSet` / `HashMap`
+
+### Go
+
+* slice
+* array
+* map
+* struct
+
+### R
+
+* vector
+* list
+* factor
+* data frame
+
+### Julia
+
+* array
+* tuple
+* `Dict`
+* `Set`
+
+So the same question still drives everything:
+**how should this language organize related values?**
+
+---
+
+## Indexing reminder
+
+Julia uses **1-based indexing**.
+
+```julia
+colors = ["red", "blue", "green"]
+println(colors[1])  # red
+println(colors[2])  # blue
+println(colors[3])  # green
+```
+
+That is one of the biggest differences from Python, TypeScript, Rust, and Go, and it lines up more with R. ([docs.julialang.org][2])
+
+---
+
+## Five exercises
+
+### Exercise 1: array
+
+Create an array called `favorite_foods` with 3 food items.
+
+Then:
+
+* print the whole array
+* print the first item
+* print the last item
+
+### Exercise 2: tuple
+
+Create a tuple called `user_profile` containing:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Print the tuple.
+
+### Exercise 3: dictionary
+
+Create a `Dict` called `book` with:
+
+* `"title"`
+* `"author"`
+* `"pages"`
+
+Print:
+
+* the whole dictionary
+* the title only
+
+### Exercise 4: set
+
+Create a `Set` called `skills` with at least 4 items, including one duplicate.
+
+Print the set, then check whether one value is in the set using `in`.
+
+### Exercise 5: combine structures
+
+Create a `Dict` called `student` with:
+
+* `"name"`
+* `"languages"` where the value is an array of 3 languages
+* `"active"` with a boolean value
+
+Print the dictionary, then print just the languages array.
+
+---
+
+## Go further
+
+### A. Push into an array
+
+```julia
+favorite_foods = ["apple", "papaya", "dragonfruit"]
+push!(favorite_foods, "grapes")
+println(favorite_foods)
+```
+
+### B. Dictionary values
+
+The docs show that `values(d)` returns an iterator over dictionary values, and `collect(values(d))` turns them into an array. ([docs.julialang.org][1])
+
+```julia
+d = Dict("a" => 1, "b" => 2)
+println(collect(values(d)))
+```
+
+### C. Array math
+
+Julia supports element-wise array math with broadcasting syntax, which is central to numerical work. ([docs.julialang.org][4])
+
+```julia
+numbers = [1, 2, 3, 4, 5]
+println(numbers .* 10)
+```
+
+## What I’ll grade today
+
+When you submit, I’ll check:
+
+* correctness
+* readability
+* whether you picked the right Julia structure
+
+Submit your **Exercise 1–5** Julia solutions.
+
+[1]: https://docs.julialang.org/en/v1/base/collections/?utm_source=chatgpt.com "Collections and Data Structures - Julia Documentation"
+[2]: https://docs.julialang.org/en/v1/base/arrays/?utm_source=chatgpt.com "Arrays - Julia Documentation"
+[3]: https://docs.julialang.org/en/v1/manual/functions/?utm_source=chatgpt.com "Functions - Julia Documentation"
+[4]: https://docs.julialang.org/en/v1/manual/performance-tips/?utm_source=chatgpt.com "Performance Tips · The Julia Language"
