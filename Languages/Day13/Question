@@ -1,0 +1,358 @@
+Excellent — **Week 2 Day 6** is **R data structures**.
+
+The current CRAN page lists **R 4.6.0** as the latest release, and the official manuals describe the core structures you’ll use most in beginner and data-analysis work: **vectors, lists, factors, and data frames**. The base R docs describe a data frame as a tightly coupled collection of variables and the fundamental data structure used by much of R’s modeling software. ([CRAN][1])
+
+## Week 2 Day 6
+
+**Language of the day:** R
+**Concept of the day:** Core data structures
+
+Today’s main R structures:
+
+* **vectors**
+* **lists**
+* **factors**
+* **data frames**
+
+These are more “R-native” than trying to directly map Python’s list/tuple/dict/set one-for-one.
+
+---
+
+## 1. Vectors
+
+A **vector** is one of the most basic R data structures. R’s intro/manuals center vectors heavily, and data frames are built from equal-length vectors. ([CRAN][2])
+
+```r
+favorite_foods <- c("apple", "papaya", "dragonfruit")
+print(favorite_foods)
+```
+
+Access by index:
+
+```r
+print(favorite_foods[1])
+print(favorite_foods[3])
+```
+
+Important difference:
+
+* Python and TypeScript use 0-based indexing
+* **R uses 1-based indexing**
+
+Add an item by creating a new combined vector:
+
+```r
+favorite_foods <- c(favorite_foods, "grapes")
+print(favorite_foods)
+```
+
+### Real-world examples
+
+Web app:
+
+```r
+menu_items <- c("Home", "Products", "Cart", "Profile")
+```
+
+Automation:
+
+```r
+files_to_process <- c("report.csv", "users.csv", "sales.csv")
+```
+
+Scientific:
+
+```r
+measurements <- c(21.5, 22.1, 21.8)
+```
+
+---
+
+## 2. Lists
+
+A **list** in R is a flexible container that can hold mixed kinds of values, including vectors, strings, numbers, booleans, and even other lists. The R docs and introductory materials describe lists as a recursive, general-purpose structure. ([CRAN][3])
+
+```r
+user_profile <- list("Anthony", 32, TRUE)
+print(user_profile)
+```
+
+Named list:
+
+```r
+book <- list(
+  title = "Apple",
+  author = "Steve Jobs",
+  pages = 549
+)
+
+print(book)
+print(book$title)
+```
+
+This is the closest base-R equivalent to a dictionary/object for many beginner tasks.
+
+---
+
+## 3. Factors
+
+A **factor** represents categorical data. Introductory R materials emphasize factors when you want a discrete variable for analysis. ([CRAN][4])
+
+```r
+roles <- factor(c("viewer", "editor", "admin", "viewer"))
+print(roles)
+```
+
+Factors are especially useful when categories matter analytically, not just as plain text.
+
+Example:
+
+```r
+membership_level <- factor(c("bronze", "silver", "gold", "silver"))
+print(membership_level)
+```
+
+This is more R/statistics-oriented than what you saw in Python or Go.
+
+---
+
+## 4. Data frames
+
+A **data frame** is one of the most important structures in R. The official docs say `data.frame()` creates tightly coupled collections of variables and that data frames are the fundamental data structure for much of R’s modeling software. The language definition also describes a data frame as a list of equal-length vectors/factors/matrices. ([Seminar for Statistics][5])
+
+```r
+student <- data.frame(
+  name = "Mike",
+  age = 32,
+  active = TRUE
+)
+
+print(student)
+```
+
+Multiple rows:
+
+```r
+students <- data.frame(
+  name = c("Mike", "Ava", "Jordan"),
+  age = c(32, 28, 35),
+  active = c(TRUE, TRUE, FALSE)
+)
+
+print(students)
+```
+
+Access a column:
+
+```r
+print(students$name)
+print(students$age)
+```
+
+Add a column:
+
+```r
+students$city <- c("Bowie", "DC", "Baltimore")
+print(students)
+```
+
+### Compare to PostgreSQL
+
+A data frame feels a lot like a small in-memory table.
+
+---
+
+## Compare the four
+
+### Vector
+
+* ordered
+* one main data type
+* very central in R
+
+### List
+
+* flexible
+* mixed types allowed
+* good for one structured record or nested values
+
+### Factor
+
+* categorical values
+* important for statistics/data analysis
+
+### Data frame
+
+* table-like
+* columns usually built from vectors
+* one of the most important R structures
+
+---
+
+## Compare to earlier languages
+
+### Python
+
+* list
+* tuple
+* dictionary
+* set
+
+### TypeScript
+
+* array
+* tuple
+* object
+* `Set`
+
+### PostgreSQL
+
+* array
+* JSON/object-like output
+* row sets
+
+### Rust
+
+* `Vec`
+* tuple
+* struct
+* hash collections
+
+### Go
+
+* slice
+* array
+* map
+* struct
+
+### R
+
+* vector
+* list
+* factor
+* data frame
+
+The same question still applies:
+**how do we organize values in the way the language expects?**
+
+---
+
+## Indexing reminder
+
+R uses **1-based indexing**.
+
+```r
+colors <- c("red", "blue", "green")
+print(colors[1])  # red
+print(colors[2])  # blue
+print(colors[3])  # green
+```
+
+That is one of the biggest differences from Python, TypeScript, Rust, and Go.
+
+---
+
+## Five exercises
+
+### Exercise 1: vector
+
+Create a vector called `favorite_foods` with 3 food items.
+
+Then:
+
+* print the whole vector
+* print the first item
+* print the last item
+
+### Exercise 2: list
+
+Create a list called `user_profile` containing:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Print the list.
+
+### Exercise 3: named list
+
+Create a named list called `book` with:
+
+* `title`
+* `author`
+* `pages`
+
+Print:
+
+* the whole list
+* the title only
+
+### Exercise 4: factor
+
+Create a factor called `skills` with at least 4 items, including one duplicate value.
+
+Print the factor.
+
+### Exercise 5: data frame
+
+Create a data frame called `student` with columns:
+
+* `name`
+* `languages`
+* `active`
+
+Use 3 rows of data.
+
+Print the whole data frame, then print just the `languages` column.
+
+---
+
+## Go further
+
+### A. Length
+
+```r
+favorite_foods <- c("apple", "papaya", "dragonfruit")
+length(favorite_foods)
+```
+
+### B. Add to a vector
+
+```r
+favorite_foods <- c(favorite_foods, "grapes")
+print(favorite_foods)
+```
+
+### C. Named list access
+
+```r
+book <- list(title = "Apple", author = "Steve Jobs", pages = 549)
+print(book$title)
+```
+
+### D. Data frame columns
+
+```r
+students <- data.frame(
+  name = c("Mike", "Ava"),
+  age = c(32, 28)
+)
+
+print(students$name)
+```
+
+## What I’ll grade today
+
+When you submit, I’ll check:
+
+* correctness
+* readability
+* whether you picked the right R structure
+
+Submit your **Exercise 1–5** R solutions.
+
+[1]: https://cran.r-project.org/?utm_source=chatgpt.com "CRAN - R Project"
+[2]: https://cran.r-project.org/doc/manuals/r-release/R-intro.html?utm_source=chatgpt.com "An Introduction to R - CRAN"
+[3]: https://cran.r-project.org/doc/contrib/R_language.pdf?utm_source=chatgpt.com "The R language – a short companion - CRAN"
+[4]: https://cran.r-project.org/doc/contrib/Lam-IntroductionToR_LHL.pdf?utm_source=chatgpt.com "An introduction to R"
+[5]: https://stat.ethz.ch/R-manual/R-devel/library/base/html/data.frame.html?utm_source=chatgpt.com "R: Data Frames"
