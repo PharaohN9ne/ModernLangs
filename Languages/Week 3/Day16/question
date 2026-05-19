@@ -1,0 +1,308 @@
+Excellent — **Week 3 Day 2** is **TypeScript file handling and basic I/O**.
+
+TypeScript itself gives us types and tooling, but for file handling and terminal input/output we usually run TypeScript on **Node.js**. The current TypeScript docs show **TypeScript 6.0**, and the current Node docs document the built-in `fs/promises` file API and `node:readline/promises` for line-based terminal input. ([typescriptlang.org][1])
+
+## Week 3 Day 2
+
+**Language of the day:** TypeScript
+**Concept of the day:** File handling and basic I/O
+
+Today’s building blocks:
+
+* `console.log()` for output
+* `readline` for terminal input
+* `fs/promises` for reading and writing files
+
+Node’s docs recommend promise-based file APIs under `fs/promises`, and the current `readline` docs include a promise-based interface in `node:readline/promises`. ([Node.js][2])
+
+---
+
+## 1. Basic output
+
+You already used `console.log()`, but now we use it as part of user interaction and file workflows.
+
+```ts
+const name: string = "Anthony";
+const age: number = 32;
+
+console.log(name);
+console.log(age);
+console.log(`My name is ${name} and I am ${age}.`);
+```
+
+This is the TypeScript/Node equivalent of Python’s `print()`.
+
+---
+
+## 2. Basic input
+
+In Node.js, a common modern way to read terminal input is `node:readline/promises`. The current Node docs show this promise-based usage directly. ([Node.js][3])
+
+```ts
+import * as readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
+
+const rl = readline.createInterface({ input, output });
+
+const name = await rl.question("What is your name? ");
+console.log(`Hello, ${name}!`);
+
+rl.close();
+```
+
+Important:
+
+* terminal input comes in as **text**
+* if you want a number, convert it
+
+```ts
+const ageText = await rl.question("How old are you? ");
+const age = Number(ageText);
+
+console.log(age + 1);
+```
+
+---
+
+## 3. Reading files
+
+The Node docs recommend `fs/promises` for promise-based file operations. ([Node.js][2])
+
+```ts
+import { readFile } from "node:fs/promises";
+
+const content = await readFile("notes.txt", "utf8");
+console.log(content);
+```
+
+What this means:
+
+* `readFile(...)` reads the file contents
+* `"utf8"` tells Node to treat it as text
+* the result is a string
+
+---
+
+## 4. Writing files
+
+To write text to a file:
+
+```ts
+import { writeFile } from "node:fs/promises";
+
+await writeFile(
+  "notes.txt",
+  "Hello from TypeScript!\nThis is my second line.\n",
+  "utf8"
+);
+```
+
+Important:
+
+* `writeFile()` replaces old contents if the file already exists
+
+### Append instead of replace
+
+The Node file system docs also provide append operations.
+
+```ts
+import { appendFile } from "node:fs/promises";
+
+await appendFile("notes.txt", "Adding one more line.\n", "utf8");
+```
+
+So:
+
+* `writeFile()` overwrites
+* `appendFile()` adds to the end ([Node.js][2])
+
+---
+
+## 5. Reading line by line
+
+Sometimes you want to process a file line by line.
+
+A beginner-friendly version is:
+
+```ts
+import { readFile } from "node:fs/promises";
+
+const content = await readFile("tasks.txt", "utf8");
+const lines = content.split("\n");
+
+for (const line of lines) {
+  if (line.trim() !== "") {
+    console.log(line);
+  }
+}
+```
+
+This is not the only way, but it is a clean beginner bridge from what you just did in Python.
+
+---
+
+## 6. Real-world examples
+
+### Web app-style example: save a config file
+
+```ts
+import { writeFile, readFile } from "node:fs/promises";
+
+const siteName = "My First App";
+const theme = "dark";
+
+await writeFile(
+  "config.txt",
+  `site_name=${siteName}\ntheme=${theme}\n`,
+  "utf8"
+);
+
+const config = await readFile("config.txt", "utf8");
+console.log(config);
+```
+
+### Automation example: save task list
+
+```ts
+import { writeFile } from "node:fs/promises";
+
+const tasks: string[] = ["email client", "backup files", "update report"];
+await writeFile("tasks.txt", tasks.join("\n") + "\n", "utf8");
+```
+
+### Scientific example: save measurements
+
+```ts
+import { writeFile } from "node:fs/promises";
+
+const measurements: number[] = [21.5, 22.1, 21.8];
+await writeFile(
+  "measurements.txt",
+  measurements.join("\n") + "\n",
+  "utf8"
+);
+```
+
+---
+
+## 7. TypeScript + Node setup note
+
+If you are writing TypeScript that uses Node file APIs, your project usually needs Node-aware settings and types. The current TypeScript 6.0 docs are the right base reference for current TypeScript behavior, while the Node docs are the source of truth for `fs/promises` and `readline`. ([typescriptlang.org][1])
+
+For this lesson, focus on understanding the code patterns first:
+
+* print output
+* read input
+* write files
+* read files back
+
+---
+
+## Compare to Python
+
+Python:
+
+```python
+with open("notes.txt", "w") as file:
+    file.write("Hello\n")
+```
+
+TypeScript/Node:
+
+```ts
+import { writeFile } from "node:fs/promises";
+
+await writeFile("notes.txt", "Hello\n", "utf8");
+```
+
+Python:
+
+```python
+with open("notes.txt", "r") as file:
+    content = file.read()
+```
+
+TypeScript/Node:
+
+```ts
+import { readFile } from "node:fs/promises";
+
+const content = await readFile("notes.txt", "utf8");
+```
+
+Same idea, different syntax.
+
+---
+
+## Five exercises
+
+### Exercise 1: simple output
+
+Create variables:
+
+* `name`
+* `favoriteLanguage`
+
+Print a sentence using both variables with `console.log()`.
+
+### Exercise 2: input
+
+Use `readline` to ask the user for their name and print a greeting.
+
+### Exercise 3: write a file
+
+Write a file called `my_notes.txt` containing at least 3 lines of text.
+
+### Exercise 4: read a file
+
+Open `my_notes.txt`, read the whole file, and print its contents.
+
+### Exercise 5: write and read a list
+
+Create an array of 3 tasks.
+Write them to a file called `tasks.txt`, one task per line.
+Then reopen `tasks.txt` and print each line.
+
+---
+
+## Go further
+
+### A. Convert input to a number
+
+```ts
+const ageText = await rl.question("Enter your age: ");
+const age = Number(ageText);
+console.log(age + 1);
+```
+
+### B. Split a file into lines
+
+```ts
+const content = await readFile("tasks.txt", "utf8");
+const lines = content.split("\n");
+
+for (const line of lines) {
+  if (line.trim() !== "") {
+    console.log(line);
+  }
+}
+```
+
+### C. Prefer `fs/promises`
+
+The current Node docs present the promise API as the modern promise-returning file API. ([Node.js][2])
+
+## What I’ll grade today
+
+When you submit, I’ll check:
+
+* correctness
+* readability
+* whether you used the right file APIs
+* whether your file logic matches the task
+
+Submit your **Exercise 1–5** TypeScript solutions for Week 3 Day 2.
+
+[1]: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-6-0.html?utm_source=chatgpt.com "Documentation - TypeScript 6.0"
+[2]: https://nodejs.org/api/fs.html?utm_source=chatgpt.com "File system | Node.js v26.1.0 Documentation"
+[3]: https://nodejs.org/api/readline.html?utm_source=chatgpt.com "Readline | Node.js v26.1.0 Documentation"
