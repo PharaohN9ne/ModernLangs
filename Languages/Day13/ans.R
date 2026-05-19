@@ -23,8 +23,8 @@ print(book$title)
 
 #question 4
 
-skills <- factor(c("writor", "editor", "director", "photographer", "director"))
-print(roles)
+skills <- factor(c("writer", "editor", "director", "photographer", "director"))
+print(skills)
 
 #question 5
 
