@@ -1,0 +1,416 @@
+Excellent — **Week 2 Day 5** is **Go data structures**.
+
+Go’s official docs and spec describe the main built-in composite structures as **arrays, slices, maps, and structs**. In practice, most Go code uses **slices rather than arrays** for sequence data, and the standard docs explicitly say slices give a more general and convenient interface to sequences. Go 1.26 is the current major release, announced in February 2026. ([Go][1])
+
+## Week 2 Day 5
+
+**Language of the day:** Go
+**Concept of the day:** Core data structures
+
+Today’s main Go structures:
+
+* **slices**
+* **arrays**
+* **maps**
+* **structs**
+
+---
+
+## 1. Slices
+
+A **slice** is Go’s main flexible sequence type. The Go docs say slices wrap arrays to provide a more useful interface, and most array programming in Go is done with slices instead of plain arrays. ([Go][2])
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    favoriteFoods := []string{"apple", "papaya", "dragonfruit"}
+    fmt.Println(favoriteFoods)
+}
+```
+
+Access by index:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    favoriteFoods := []string{"apple", "papaya", "dragonfruit"}
+    fmt.Println(favoriteFoods[0])
+    fmt.Println(favoriteFoods[2])
+}
+```
+
+Add an item with `append`:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    favoriteFoods := []string{"apple", "papaya", "dragonfruit"}
+    favoriteFoods = append(favoriteFoods, "grapes")
+    fmt.Println(favoriteFoods)
+}
+```
+
+### Real-world examples
+
+Web app:
+
+```go
+menuItems := []string{"Home", "Products", "Cart", "Profile"}
+```
+
+Automation:
+
+```go
+filesToProcess := []string{"report.csv", "users.csv", "sales.csv"}
+```
+
+Scientific computing:
+
+```go
+measurements := []float64{21.5, 22.1, 21.8}
+```
+
+---
+
+## 2. Arrays
+
+An **array** in Go has a fixed length as part of its type. The language spec lists arrays among the composite literal types, but for everyday work you will usually prefer slices. ([Go][3])
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    colors := [3]string{"red", "blue", "green"}
+    fmt.Println(colors)
+}
+```
+
+Access works the same way:
+
+```go
+fmt.Println(colors[0])
+fmt.Println(colors[2])
+```
+
+### Slice vs array
+
+Slice:
+
+```go
+foods := []string{"apple", "papaya", "dragonfruit"}
+```
+
+Array:
+
+```go
+foods := [3]string{"apple", "papaya", "dragonfruit"}
+```
+
+For this course, when you think “Go list,” think **slice** first.
+
+---
+
+## 3. Maps
+
+A **map** in Go stores key-value pairs. The Go team’s “Maps in action” article says Go provides a built-in map type that implements a hash table. ([Go][4])
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    book := map[string]interface{}{
+        "title":  "Apple",
+        "author": "Steve Jobs",
+        "pages":  549,
+    }
+
+    fmt.Println(book)
+    fmt.Println(book["title"])
+}
+```
+
+For a more specific typed map:
+
+```go
+scores := map[string]int{
+    "math":    95,
+    "science": 88,
+}
+```
+
+Maps are Go’s closest equivalent to:
+
+* Python dictionaries
+* TypeScript objects used like key-value maps
+* Rust `HashMap`
+
+---
+
+## 4. Structs
+
+A **struct** groups named fields together into one value. The Go spec describes composite literals for structs, and structs are the main way to model a record with named fields. ([Go][3])
+
+```go
+package main
+
+import "fmt"
+
+type Book struct {
+    Title  string
+    Author string
+    Pages  int
+}
+
+func main() {
+    book := Book{
+        Title:  "Apple",
+        Author: "Steve Jobs",
+        Pages:  549,
+    }
+
+    fmt.Println(book)
+    fmt.Println(book.Title)
+}
+```
+
+### Real-world example: student
+
+```go
+package main
+
+import "fmt"
+
+type Student struct {
+    Name      string
+    Languages []string
+    Active    bool
+}
+
+func main() {
+    student := Student{
+        Name:      "Mike",
+        Languages: []string{"English", "Spanish", "French"},
+        Active:    true,
+    }
+
+    fmt.Println(student)
+    fmt.Println(student.Languages)
+}
+```
+
+---
+
+## Compare the four
+
+### Slice
+
+* ordered
+* flexible size
+* most common sequence type in Go
+
+### Array
+
+* ordered
+* fixed size
+* less common in everyday application code
+
+### Map
+
+* key-value storage
+* fast lookup by key
+
+### Struct
+
+* named fields
+* best for one clearly structured record
+
+---
+
+## Compare to earlier languages
+
+### Python
+
+* list
+* tuple
+* dictionary
+* set
+
+### TypeScript
+
+* array
+* tuple
+* object
+* `Set`
+
+### PostgreSQL
+
+* arrays
+* row-like outputs
+* JSON objects
+* result sets
+
+### Rust
+
+* `Vec`
+* tuple
+* struct
+* `HashSet` / `HashMap`
+
+### Go
+
+* slice
+* array
+* map
+* struct
+
+The same question is still driving all of this:
+**what is the best way to organize related values?**
+
+---
+
+## Indexing reminder
+
+Go slices and arrays use **zero-based indexing**.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    colors := []string{"red", "blue", "green"}
+    fmt.Println(colors[0])
+    fmt.Println(colors[1])
+    fmt.Println(colors[2])
+}
+```
+
+---
+
+## Five exercises
+
+### Exercise 1: slice
+
+Create a slice called `favoriteFoods` with 3 food items.
+
+Then:
+
+* print the whole slice
+* print the first item
+* print the last item
+
+### Exercise 2: array
+
+Create an array called `userProfile` containing:
+
+* your name
+* your age
+* whether you want to build web apps
+
+Because Go arrays must have one element type, use an array of strings and store those values as strings.
+
+Print the array.
+
+Example shape:
+
+```go
+userProfile := [3]string{"Anthony", "32", "true"}
+```
+
+### Exercise 3: map
+
+Create a map called `book` with keys:
+
+* `"title"`
+* `"author"`
+* `"pages"`
+
+Print:
+
+* the whole map
+* the title only
+
+### Exercise 4: struct
+
+Create a struct called `Book` with fields:
+
+* `Title`
+* `Author`
+* `Pages`
+
+Then create one `book` value and print:
+
+* the whole struct
+* the title only
+
+### Exercise 5: combine structures
+
+Create a struct called `Student` with fields:
+
+* `Name`
+* `Languages` where the value is a slice of 3 languages
+* `Active` with a boolean value
+
+Create one student value, print the whole struct, then print just the `Languages` field.
+
+---
+
+## Go further
+
+### A. Append to a slice
+
+```go
+tasks := []string{"email", "backup"}
+tasks = append(tasks, "deploy")
+fmt.Println(tasks)
+```
+
+### B. Use a typed map
+
+```go
+scores := map[string]int{
+    "math": 95,
+    "science": 88,
+}
+fmt.Println(scores["math"])
+```
+
+### C. Struct literal
+
+```go
+type Point struct {
+    X int
+    Y int
+}
+
+p := Point{X: 3, Y: 4}
+fmt.Println(p)
+```
+
+## What I’ll grade today
+
+When you submit, I’ll check:
+
+* correctness
+* readability
+* whether you chose the right Go structure
+
+Submit your **Exercise 1–5** Go solutions.
+
+[1]: https://go.dev/doc/go1.26?utm_source=chatgpt.com "Go 1.26 Release Notes"
+[2]: https://go.dev/doc/effective_go?utm_source=chatgpt.com "Effective Go"
+[3]: https://go.dev/ref/spec?utm_source=chatgpt.com "The Go Programming Language Specification"
+[4]: https://go.dev/blog/maps?utm_source=chatgpt.com "Go maps in action"
